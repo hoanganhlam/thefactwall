@@ -1,0 +1,116 @@
+#components-layout-demo-fixed .logo {
+    width: 200px;
+    margin: 0 24px 0 0;
+    float: left;
+    height: 45px;
+
+    img {
+        width: 100%;
+    }
+}
+
+.ant-layout-header {
+    height: 45px;
+    line-height: 45px;
+    background: #000;
+}
+
+.container {
+    max-width: 888px;
+    margin: 0 auto;
+
+    .ant-row {
+        width: calc(100% + 16px);;
+    }
+}
+
+.bt_16 {
+    margin-bottom: 16px;
+}
+
+.uppercase {
+    text-transform: uppercase;
+}
+
+.fact-card {
+    margin-bottom: 16px;
+    position: relative;
+
+    .ant-list-item-meta-title {
+        margin-bottom: 0;
+        font-size: 14px;
+    }
+
+    .ant-list-vertical .ant-list-item-meta {
+        margin-bottom: 0;
+    }
+
+    .ant-list-item-content {
+        font-size: 16px;
+    }
+
+    .ant-card {
+        font-size: 12px;
+    }
+
+    .ant-row {
+        width: 100%;
+    }
+}
+
+.ant-card {
+    .label {
+        position: absolute;
+        top: 5px;
+        left: 0;
+        padding: 0 10px;
+        background: #24890d;
+        color: #FFF;
+        font-size: 12px;
+    }
+
+    .ant-card-body {
+        padding: 16px;
+    }
+
+    .ant-list-item {
+        padding-top: 0;
+        padding-bottom: 0;
+    }
+}
+
+
+.ant-layout {
+    background: #FFF;
+}
+
+h1.uppercase {
+    font-size: 16px;
+}
+
+h3.ant-list-item-meta-title {
+    font-size: 18px;
+}
+
+.gray.ant-card {
+    background: #F9F9F9;
+}
+
+@media only screen and (max-width: 767px) {
+    .ant-drawer-content-wrapper {
+        max-width: 85%;
+    }
+    .ant-menu {
+        max-width: 50px;
+    }
+}
+
+.ant-layout-content {
+    min-height: calc(100vh - 135px);
+}
+
+.ant-comment {
+    .ant-row {
+        width: 100%;
+    }
+}

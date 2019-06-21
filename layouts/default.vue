@@ -23,14 +23,12 @@
                 </a-menu-item>
             </a-menu>
             <div style="float: right">
-                <a-button @click="visible = true" type="primary">Post</a-button>
+                <a-button @click="visible = true" type="primary">
+                    <a-icon type="edit" /> Post</a-button>
             </div>
         </a-layout-header>
-        <a-layout-content :style="{ padding: '0 50px', marginTop: '64px' }">
+        <a-layout-content class="master">
             <div class="container">
-                <a-card class="bt_16">
-                    <img slot="cover" src="https://picsum.photos/id/1/720/90" alt="">
-                </a-card>
                 <nuxt/>
             </div>
         </a-layout-content>
@@ -39,7 +37,7 @@
         </a-layout-footer>
         <a-drawer
             title="SHARE THE TRUTH"
-            :width="720"
+            :width="520"
             :visible="visible"
             @close="visible = false"
             :wrapStyle="{height: 'calc(100% - 108px)',overflow: 'auto',paddingBottom: '108px'}">

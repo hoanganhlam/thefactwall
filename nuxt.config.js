@@ -45,7 +45,8 @@ module.exports = {
     modules: [
         // Doc: https://axios.nuxtjs.org/usage
         '@nuxtjs/axios',
-        '@nuxtjs/auth'
+        '@nuxtjs/auth',
+        'cookie-universal-nuxt',
     ],
     /*
      ** Axios module configuration
@@ -91,9 +92,6 @@ module.exports = {
             callback: '/member/callback',
             user: '/member/me'
         },
-        // plugins: [
-        //     '@/plugins/auth.js'
-        // ]
     },
     /*
     ** Build configuration
@@ -121,7 +119,8 @@ module.exports = {
                     'border-radius-base': '2px',
                     'menu-dark-submenu-bg': '#000',
                     'menu-dark-bg': '#000',
-                    'layout-sider-background': '#FFF'
+                    'layout-sider-background': '#FFF',
+                    'menu-dark-color': '#FFF',
                 },
                 javascriptEnabled: true
             }

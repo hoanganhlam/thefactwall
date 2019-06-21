@@ -18,7 +18,7 @@
                             <nuxt-link :to="`/member/${fact.user.username}`">{{convertName(fact.user)}}</nuxt-link>
                         </a-tag>
                     </div>
-                    <q>{{fact.short}}</q>
+                    <q style="font-size: 25px">{{fact.short}}</q>
                 </div>
             </a-col>
             <span class="label">New</span>

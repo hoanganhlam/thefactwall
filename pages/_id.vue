@@ -1,11 +1,14 @@
 <template>
-    <a-layout>
+    <a-layout class="fact-detail-page">
         <a-row :gutter="16">
             <a-col class="gutter-row" :md="16" :xs="24">
                 <a-layout-content :style="{ minHeight: '700px' }">
                     <a-card class="bt_16 gray fact-card">
+                        <div class="featured" slot="cover" v-if="fact.media">
+                            <img alt="logo" :src="fact.media.file">
+                        </div>
                         <div class="ant-list-item-content bt_16" style="display: unset">
-                            <h4>{{fact.short}}</h4>
+                            <h1>{{fact.short}}</h1>
                             <p>{{fact.long}}</p>
                         </div>
                         <user-card class="bt_16" :user="fact.user">

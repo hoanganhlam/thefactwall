@@ -10,6 +10,7 @@ module.exports = {
     */
     head: {
         title: process.env.npm_package_name || '',
+        titleTemplate: '%s - TheFactWall.com | Explore interesting facts around us!',
         meta: [
             {charset: 'utf-8'},
             {name: 'viewport', content: 'width=device-width, initial-scale=1'},
@@ -121,6 +122,7 @@ module.exports = {
                     'menu-dark-bg': '#000',
                     'layout-sider-background': '#FFF',
                     'menu-dark-color': '#FFF',
+                    'list-item-meta-margin-bottom': '5px'
                 },
                 javascriptEnabled: true
             }

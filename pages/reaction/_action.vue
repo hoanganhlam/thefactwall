@@ -4,8 +4,12 @@
             <a-row :gutter="16">
                 <a-col class="gutter-row" :md="16" :xs="24">
                     <a-layout-content :style="{ minHeight: '700px' }">
-                        <h1 class="uppercase">{{capitalizeFirst(this.title)}}</h1>
-                        <FactList :data="fact" :query="query" :page-size="10"/>
+                        <a-card :body-style="{padding: 0}">
+                            <a-card :bordered="false" :body-style="{paddingBottom: 0}">
+                                <h1>{{capitalizeFirst(this.title)}}</h1>
+                            </a-card>
+                            <FactList :data="fact" :query="query" :page-size="10"/>
+                        </a-card>
                     </a-layout-content>
                 </a-col>
                 <a-col class="gutter-row" :md="8" :xs="24">
@@ -20,6 +24,7 @@
 
 <script>
     import FactList from '../../components/fact/List'
+
     export default {
         head() {
             return {

@@ -33,16 +33,22 @@
 }
 
 .fact-card {
-    margin-bottom: 16px;
+    border-bottom: 1px solid #EEE;
     position: relative;
+
+    &:last-child {
+        border-bottom: 0;
+    }
 
     .ant-list-item-meta-title {
         margin-bottom: 0;
         font-size: 14px;
+        line-height: 1.5;
     }
 
     .ant-list-vertical .ant-list-item-meta {
         margin-bottom: 0;
+        line-height: 1;
     }
 
     .ant-list-item-content {
@@ -107,9 +113,11 @@ h3.ant-list-item-meta-title {
     .ant-menu {
         max-width: 50px;
     }
-    .master.ant-layout-content,
+    .master.ant-layout-content {
+        padding: 64px 16px;
+    }
     .ant-layout-header {
-        padding: 0 16px!important;
+        padding: 0 16px !important;
     }
 }
 
@@ -132,4 +140,8 @@ h3.ant-list-item-meta-title {
     img {
         width: 100%;
     }
+}
+
+h1 {
+    line-height: 1.2;
 }

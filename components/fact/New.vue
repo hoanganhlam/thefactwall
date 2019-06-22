@@ -15,10 +15,21 @@
                 <div v-for="fact in facts" :key="fact.id">
                     <div>
                         <a-tag>
-                            <nuxt-link :to="`/member/${fact.user.username}`">{{convertName(fact.user)}}</nuxt-link>
+                            <nuxt-link :to="`/member/${fact.user.username}`">
+                                <a-icon type="user" />
+                                <span>{{convertName(fact.user)}}</span>
+                            </nuxt-link>
                         </a-tag>
+                        <nuxt-link
+                            v-for="topic in fact.topics" :key="topic.id" class="ant-tag"
+                            :to="`/topic/${topic.slug}/`">
+                            <a-icon type="tag" />
+                            <span>{{topic.name}}</span>
+                        </nuxt-link>
                     </div>
-                    <q style="font-size: 25px">{{fact.short}}</q>
+                    <q style="font-size: 20px">
+                        <n-link :to="`/${fact.id}`">{{fact.short}}</n-link>
+                    </q>
                 </div>
             </a-col>
             <span class="label">New</span>

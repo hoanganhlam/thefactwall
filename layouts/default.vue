@@ -4,10 +4,7 @@
             <n-link to="/" class="logo">
                 <img src="/logo.jpg" alt="">
             </n-link>
-            <a-menu
-                theme="dark"
-                mode="horizontal"
-                :defaultSelectedKeys="['0']"
+            <a-menu theme="dark" mode="horizontal"
                 :style="{ lineHeight: '45px', float: 'left' }">
                 <a-menu-item key="1">
                     <n-link to="/reaction/wtf">WTF</n-link>
@@ -21,6 +18,9 @@
                 <a-menu-item key="4">
                     <n-link to="/reaction/fun">Fun</n-link>
                 </a-menu-item>
+                <a-menu-item key="5">
+                    <n-link to="/onthisday">On This Day</n-link>
+                </a-menu-item>
             </a-menu>
             <div style="float: right">
                 <a-button @click="visible = true" type="primary">
@@ -32,9 +32,7 @@
                 <nuxt/>
             </div>
         </a-layout-content>
-        <a-layout-footer :style="{ textAlign: 'center' }">
-            Ant Design ©2018 Created by Ant UED
-        </a-layout-footer>
+        <a-layout-footer :style="{ textAlign: 'center' }">TheFactWall.com ©2018</a-layout-footer>
         <a-drawer
             title="SHARE THE TRUTH"
             :width="520"

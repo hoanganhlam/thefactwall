@@ -1,7 +1,7 @@
 <template>
     <a-row :gutter="16">
         <a-col class="bt_16" :md="md" :sm="sm" :xs="xs" v-for="topic in topics" :key="topic.id">
-            <TopicCard :topic="topic" :label="label"/>
+            <TopicCard :topic="topic" :icon="icon" :label="label"/>
         </a-col>
     </a-row>
 </template>
@@ -48,6 +48,10 @@
             label: {
                 type: String,
                 default: null
+            },
+            icon: {
+                type: String,
+                default: 'rise'
             }
         },
         components: {

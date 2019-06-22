@@ -52,6 +52,9 @@
                                     :autosize="{ minRows: 2 }"/>
                     </a-card>
                 </a-form-item>
+                <a-form-item label="Date">
+                    <a-date-picker v-model="date" format="YYYY-MM-DD" />
+                </a-form-item>
                 <a-form-item label="Photo">
                     <Uploader @uploaded="photo = $event"/>
                 </a-form-item>
@@ -70,6 +73,7 @@
     import LoginForm from '../user/Login'
     import Uploader from '../media/Uploader'
     import debounce from 'lodash/debounce';
+    import moment from "moment";
 
     export default {
         name: "Post",
@@ -77,7 +81,7 @@
             this.factForm = this.$form.createForm(this);
         },
         data() {
-            this.fetchTopic = debounce(this.fetchTopic, 800);
+            this.fetchTopic = debounce(this.fetchTopic, 500);
             return {
                 topics: [],
                 selectedTopic: [],
@@ -89,7 +93,8 @@
                     description: null
                 },
                 visible: false,
-                topicName: null
+                topicName: null,
+                date: null
             }
         },
 
@@ -107,6 +112,9 @@
                 e.preventDefault();
                 this.factForm.validateFields((err, values) => {
                     if (!err) {
+                        if (_this.date) {
+                            values.date = moment(_this.date).format('YYYY-MM-DD HH:mm')
+                        }
                         if (_this.selectedTopic.length) {
                             values.topics = _this.selectedTopic
                         }
@@ -117,6 +125,10 @@
                             values.source = _this.source
                         }
                         this.$axios.$post('/fact/facts/', values).then(res => {
+                            values.short = null
+                            values.log = null
+                            _this.selectedTopic = []
+                            _this.photo = null
                             this.$router.replace({path: '/' + res.id})
                         })
                     }

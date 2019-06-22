@@ -1,13 +1,16 @@
 <template>
-    <div class="ant-list ant-list-vertical ant-list-lg ant-list-split bt_16">
-        <a-skeleton v-for="fact in facts" :key="fact.id" :loading="loading" active avatar>
-            <FactCard :fact="fact"/>
-        </a-skeleton>
-        <a-pagination
-            v-if="pageSize  * current < total"
-            :pageSize="pageSize" style="margin: 32px 0"
-            :total="total"
-            @change="handle_change"/>
+    <div class="ant-list ant-list-vertical ant-list-lg ant-list-split">
+        <a-card class="fact-card" v-for="fact in facts" :key="fact.id" :bordered="false">
+            <a-skeleton :loading="loading" active avatar>
+                <FactCard :fact="fact"/>
+            </a-skeleton>
+        </a-card>
+        <a-card :bordered="false" v-if="pageSize  * current < total">
+            <a-pagination
+                :pageSize="pageSize"
+                :total="total"
+                @change="handle_change"/>
+        </a-card>
     </div>
 </template>
 

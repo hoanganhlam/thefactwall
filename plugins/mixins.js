@@ -4,7 +4,8 @@ Vue.mixin({
     data() {
         return {
             domain: process.env.domain,
-            api_domain: process.env.apiDomain
+            api_domain: process.env.apiDomain,
+            moment: moment
         }
     },
     methods: {
@@ -43,6 +44,9 @@ Vue.mixin({
                 return user.first_name + ' ' + user.last_name
             }
             return user.username
+        },
+        formatDate(dateStr) {
+            return moment(dateStr).format('YYYY-MM-DD')
         }
     }
 })

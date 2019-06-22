@@ -21,7 +21,8 @@
         "express": "^4.16.4",
         "moment": "^2.24.0",
         "nuxt": "^2.0.0",
-        "vue": "latest"
+        "vue": "latest",
+        "lodash": "latest"
     },
     "devDependencies": {
         "caniuse-lite": "1.0.30000974",

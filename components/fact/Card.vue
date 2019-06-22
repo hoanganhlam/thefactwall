@@ -1,5 +1,5 @@
 <template>
-    <a-card class="fact-card">
+    <div>
         <div class="ant-list-item">
             <div class="ant-list-item-extra-wrap">
                 <div class="ant-list-item-main">
@@ -7,17 +7,12 @@
                         <user-card :user="fact.user">
                             <div class="ant-list-item-meta-description">
                                 <small>
-                                    <nuxt-link :to="'/' + fact.id.toString()">{{timeSince(fact.created)}} ago</nuxt-link>
+                                    <nuxt-link :to="'/' + fact.id.toString()">{{timeSince(fact.created)}} ago
+                                    </nuxt-link>
                                 </small>
                             </div>
                         </user-card>
                         <p>{{fact.short}}</p>
-                        <div>
-                            <nuxt-link
-                                v-for="topic in fact.topics" :key="topic.id" class="ant-tag"
-                                :to="`/topic/${topic.slug}/`">{{topic.name}}
-                            </nuxt-link>
-                        </div>
                     </div>
                 </div>
                 <div class="ant-list-item-extra" v-if="fact.media">
@@ -27,38 +22,55 @@
                 </div>
             </div>
             <a-row>
-                <a-col :span="12">
+                <a-col :span="6">
                     <a-popover title="Rating">
                         <template slot="content">
                             <a-button-group>
-                                <a-button @click="toggleVote(1)" size="small" v-bind:class="{'ant-btn-primary': isVoted(1)}">
+                                <a-button @click="toggleVote(1)" size="small"
+                                          v-bind:class="{'ant-btn-primary': isVoted(1)}">
                                     <a-icon :component="WOWIcon"/>
                                     <span>wow</span>
                                 </a-button>
-                                <a-button @click="toggleVote(2)" size="small" v-bind:class="{'ant-btn-primary': isVoted(2)}">
+                                <a-button @click="toggleVote(2)" size="small"
+                                          v-bind:class="{'ant-btn-primary': isVoted(2)}">
                                     <a-icon :component="FunIcon"/>
                                     <span>interesting</span>
                                 </a-button>
-                                <a-button @click="toggleVote(3)" size="small" v-bind:class="{'ant-btn-primary': isVoted(3)}">
+                                <a-button @click="toggleVote(3)" size="small"
+                                          v-bind:class="{'ant-btn-primary': isVoted(3)}">
                                     <a-icon :component="FunIcon"/>
                                     <span>fun</span>
                                 </a-button>
-                                <a-button @click="toggleVote(4)" size="small" v-bind:class="{'ant-btn-primary': isVoted(4)}">
+                                <a-button @click="toggleVote(4)" size="small"
+                                          v-bind:class="{'ant-btn-primary': isVoted(4)}">
                                     <a-icon :component="BoredIcon"/>
                                     <span>bored</span>
                                 </a-button>
                             </a-button-group>
                         </template>
-                        <span class="faq">
-                    <a-button size="small" v-bind:class="{'ant-btn-primary': is_rated}">
-                        <a-icon :component="WOWIcon"/>
-                        <span>Rate</span>
-                    </a-button>
-                </span>
+                        <div class="faq">
+                            <a-button size="small" v-bind:class="{'ant-btn-primary': is_rated && is_rated.id}">
+                                <a-icon :component="WOWIcon"/>
+                                <span>Rate</span>
+                            </a-button>
+                        </div>
                     </a-popover>
                 </a-col>
-                <a-col :span="12" v-if="fact.source && typeof fact.source === 'object'">
-                    <a-button size="small" style="float: right" @click="showSource = !showSource">
+                <a-col :span="18" style="text-align: right">
+                    <nuxt-link
+                        v-if="fact.date" class="ant-tag"
+                        :to="`/onthisday/${moment(fact.date).month() + 1}/${moment(fact.date).date()}/?year=${moment(fact.date).year()}`">
+                        <a-icon type="calendar"/>
+                        <span>{{formatDate(fact.date)}}</span>
+                    </nuxt-link>
+                    <nuxt-link
+                        v-for="topic in fact.topics" :key="topic.id" class="ant-tag"
+                        :to="`/topic/${topic.slug}/`">
+                        <a-icon type="tag"/>
+                        <span>{{topic.name}} </span>
+                    </nuxt-link>
+                    <a-button v-if="fact.source && typeof fact.source === 'object'" size="small" style="float: right"
+                              @click="showSource = !showSource">
                         <a-icon type="dash"/>
                     </a-button>
                 </a-col>
@@ -71,7 +83,7 @@
                 <q v-if="fact.source.description">{{fact.source.description}}</q>
             </a-card>
         </div>
-    </a-card>
+    </div>
 </template>
 
 <script>
@@ -95,6 +107,7 @@
                 showSource: false
             }
         },
+        watchQuery: true,
         methods: {
             async toggleVote(value) {
                 let data = {
@@ -115,7 +128,8 @@
             },
             isVoted(value) {
                 return this.is_rated && this.is_rated.id && this.is_rated.value === value
-            }
+            },
+
         }
     }
 </script>

@@ -28,13 +28,17 @@
             isSingle: {
                 type: Boolean,
                 default: false
+            },
+            selected: {
+                type: Object,
+                default: null
             }
         },
         data() {
             return {
                 fileList: [],
                 singleFile: null,
-                photo: null
+                photo: this.selected
             }
         },
         methods: {
@@ -59,5 +63,10 @@
                 })
             }
         },
+        watch: {
+            selected() {
+                this.photo = this.selected
+            }
+        }
     }
 </script>

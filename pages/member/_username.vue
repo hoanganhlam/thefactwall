@@ -7,12 +7,15 @@
                         <a-card class="bt_16 gray">
                             <div class="ant-list-item-meta">
                                 <div class="ant-list-item-meta-avatar">
-                                    <div
-                                        style="width: 150px; height: 150px;"
-                                        class="ant-avatar ant-avatar-circle ant-avatar-image">
-                                        <img v-if="user.avatar.id" :alt="user.username"
-                                             :src="api_domain + user.avatar.thumbnails.thumb_150_150">
-                                        <img alt="Empty Avatar" v-else src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png">                                    </div>
+                                    <a-badge :count="res.total">
+                                        <a-avatar
+                                            v-if="user.avatar.id" shape="square"
+                                            style="width: 100px; height: 100px;">
+                                            <img :alt="user.username"
+                                                 :src="api_domain + user.avatar.thumbnails.thumb_150_150">
+                                        </a-avatar>
+                                        <a-avatar v-else shape="square" icon="user"/>
+                                    </a-badge>
                                 </div>
                                 <div class="ant-list-item-meta-content">
                                     <h3 class="ant-list-item-meta-title">
@@ -22,8 +25,12 @@
                                 </div>
                             </div>
                         </a-card>
-                        <h1 class="uppercase">Facts by {{convertName(user)}}</h1>
-                        <FactList :data="res" :query="query" :page-size="10"/>
+                        <a-card :body-style="{padding: 0}">
+                            <a-card :bordered="false" :body-style="{paddingBottom: 0}">
+                                <h1 class="uppercase">Facts by {{convertName(user)}}</h1>
+                            </a-card>
+                            <FactList :data="res" :query="query" :page-size="10"/>
+                        </a-card>
                     </a-layout-content>
                 </a-col>
                 <a-col class="gutter-row" :md="8" :xs="24">

@@ -8,7 +8,7 @@
                 <n-link :to="`/topic/${topic.slug}/`">{{topic.name}}</n-link>
             </h3>
         </a-card-meta>
-        <span v-if="label" class="label">{{label}}</span>
+        <span v-if="label" class="label"><a-icon :type="icon" /> {{label}}</span>
     </a-card>
 </template>
 
@@ -22,6 +22,10 @@
             label: {
                 type: String,
                 default: null
+            },
+            icon: {
+                type: String,
+                default: 'rise'
             }
 
         }

@@ -1,7 +1,7 @@
 <template>
     <a-layout class="fact-detail-page">
         <a-row :gutter="16">
-            <a-col class="gutter-row" :md="16" :xs="24">
+            <a-col class="gutter-row bt_16" :md="16" :xs="24">
                 <a-layout-content :style="{ minHeight: '700px' }">
                     <a-card class="bt_16 gray fact-card">
                         <div class="featured" slot="cover" v-if="fact.media">
@@ -47,7 +47,7 @@
                                         </a-button-group>
                                     </template>
                                     <div class="faq">
-                                        <a-button size="small" v-bind:class="{'ant-btn-primary': is_rated}">
+                                        <a-button size="small" v-bind:class="{'ant-btn-primary': is_rated && is_rated.id}">
                                             <a-icon :component="WOWIcon"/>
                                             <span>Rate</span>
                                         </a-button>

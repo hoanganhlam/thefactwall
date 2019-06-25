@@ -25,11 +25,11 @@
                     <a-layout-sider width="100%">
                         <a-card class="bt_16">
                             <a-button-group style="width: 100%">
-                                <n-link :to="next" class="ant-btn ant-btn-primary" style="width: 50%">
+                                <n-link :to="previous" class="ant-btn ant-btn-primary" style="width: 50%">
                                     <a-icon type="left"/>
                                     <span>Previous</span>
                                 </n-link>
-                                <n-link :to="previous" class="ant-btn ant-btn-primary" style="width: 50%">
+                                <n-link :to="next" class="ant-btn ant-btn-primary" style="width: 50%">
                                     <span>Next</span>
                                     <a-icon type="right"/>
                                 </n-link>

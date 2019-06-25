@@ -4,6 +4,7 @@ export default function ({ $axios, app, redirect }) {
 
         let originalRequest = err.config;
         if (code == 401) {
+            app.$auth.logout()
             originalRequest.__isRetryRequest = true;
             app.$cookies.removeAll()
             redirect('/')

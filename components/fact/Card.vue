@@ -12,7 +12,10 @@
                                 </small>
                             </div>
                         </user-card>
-                        <p>{{fact.short}}</p>
+                        <Editable
+                            v-if="$auth.loggedIn && $auth.user.id === fact.user.id"
+                            :text="fact.short" @change="handleUpdate(fact.id, 'name', $event)"/>
+                        <p v-else>{{factCopy.short}}</p>
                     </div>
                 </div>
                 <div class="ant-list-item-extra" v-if="fact.media">
@@ -91,11 +94,15 @@
     import WOWIcon from '../../assets/emoij/wow.svg';
     import WTFIcon from '../../assets/emoij/wtf.svg';
     import BoredIcon from '../../assets/emoij/bored.svg';
+    import Editable from '../../components/generic/Editable'
 
     export default {
         name: "FactCard",
         props: {
             fact: {}
+        },
+        components: {
+            Editable
         },
         data() {
             return {
@@ -104,7 +111,8 @@
                 WTFIcon,
                 BoredIcon,
                 is_rated: this.fact.is_rated,
-                showSource: false
+                showSource: false,
+                factCopy: this.fact
             }
         },
         watchQuery: true,
@@ -129,7 +137,11 @@
             isVoted(value) {
                 return this.is_rated && this.is_rated.id && this.is_rated.value === value
             },
-
+            async handleUpdate(id, dataIndex, value) {
+                let data = {}
+                data[dataIndex] = value
+                this.factCopy = await this.$axios.$put(`/fact/facts/${id}/`, data)
+            }
         }
     }
 </script>

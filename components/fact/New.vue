@@ -13,7 +13,7 @@
             </a-col>
             <a-col :md="19" :xs="16">
                 <div v-for="fact in facts" :key="fact.id">
-                    <div>
+                    <div style="display: inline;">
                         <a-tag>
                             <nuxt-link :to="`/member/${fact.user.username}`">
                                 <a-icon type="user" />

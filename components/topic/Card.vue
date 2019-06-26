@@ -1,5 +1,5 @@
 <template>
-    <a-card hoverable>
+    <a-card class="topic-card" hoverable>
         <img slot="cover" v-if="topic.media && topic.media.id" :alt="topic.name"
              :src="api_domain + topic.media.thumbnails.thumb_200_250">
         <img slot="cover" alt="Empty Avatar" v-else src="https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png">

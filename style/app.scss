@@ -114,7 +114,7 @@ h3.ant-list-item-meta-title {
         max-width: 50px;
     }
     .master.ant-layout-content {
-        padding: 64px 16px;
+        padding: 64px 35px;
     }
     .ant-layout-header {
         padding: 0 16px !important;
@@ -203,4 +203,23 @@ h1 {
     margin: -16px;
     padding: 5px 10px;
     background: #F9F9F9;
+}
+
+
+.topic-card {
+    .ant-card-body {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        display: flex;
+        align-items: flex-end;
+
+        a {
+            color: #FFF;
+        }
+
+        background-image: linear-gradient(-0deg, #22890e94, #ffffff00);
+    }
 }

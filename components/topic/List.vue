@@ -1,6 +1,6 @@
 <template>
     <div class="topics">
-        <div class="previous" @click="previous()">
+        <div v-if="lastPage" class="previous" @click="previous()">
             <a-icon type="double-left"/>
         </div>
         <a-row :gutter="16">
@@ -8,7 +8,7 @@
                 <TopicCard :topic="topic" :icon="icon" :label="label"/>
             </a-col>
         </a-row>
-        <div class="next" @click="next()">
+        <div v-if="lastPage" class="next" @click="next()">
             <a-icon type="double-right"/>
         </div>
     </div>

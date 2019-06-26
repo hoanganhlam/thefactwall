@@ -7,10 +7,8 @@
             <a-row :gutter="16">
                 <a-col class="gutter-row bt_16" :md="16" :xs="24">
                     <FactNew :data="home.new_fact"/>
-                    <a-card :body-style="{padding: 0}">
-                        <a-card :bordered="false" :body-style="{paddingBottom: 0}">
-                            <h4 class="uppercase">Popular Facts</h4>
-                        </a-card>
+                    <a-card :bordered="false" :body-style="{padding: 0}">
+                        <h4 class="uppercase">Popular Facts</h4>
                         <FactList :data="home.hot_fact"/>
                     </a-card>
                 </a-col>

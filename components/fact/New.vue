@@ -1,5 +1,5 @@
 <template>
-    <a-card class="bt_16">
+    <a-card class="fact-card bt_16">
         <a-row type="flex" justify="space-around" align="middle">
             <a-col :md="5" :xs="8">
                 <a-button-group>

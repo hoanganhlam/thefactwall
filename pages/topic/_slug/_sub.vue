@@ -8,7 +8,7 @@
                             <div class="ant-list-item-meta">
                                 <div class="ant-list-item-meta-avatar">
                                     <a-badge :count="topic.fact.total">
-                                        <a-avatar v-if="topic.media" shape="square" style="width: 150px; height: 150px;">
+                                        <a-avatar v-if="topic.media && topic.media.id" shape="square" style="width: 150px; height: 150px;">
                                             <img :src="api_domain + topic.media.thumbnails.thumb_150_150">
                                         </a-avatar>
                                         <a-avatar v-else shape="square" icon="tag"/>
@@ -22,10 +22,8 @@
                                 </div>
                             </div>
                         </a-card>
-                        <a-card :body-style="{padding: 0}">
-                            <a-card :bordered="false" :body-style="{paddingBottom: 0}">
-                                <h1 class="uppercase">{{capitalizeFirst(this.title)}}</h1>
-                            </a-card>
+                        <a-card :bordered="false" :body-style="{padding: 0}">
+                            <h1 class="uppercase">{{capitalizeFirst(this.title)}}</h1>
                             <FactList :data="topic.fact" :query="query" :page-size="10"/>
                         </a-card>
                     </a-layout-content>

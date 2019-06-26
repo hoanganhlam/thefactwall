@@ -1,9 +1,17 @@
 <template>
-    <a-row :gutter="16">
-        <a-col class="bt_16" :md="md" :sm="sm" :xs="xs" v-for="topic in topics" :key="topic.id">
-            <TopicCard :topic="topic" :icon="icon" :label="label"/>
-        </a-col>
-    </a-row>
+    <div class="topics">
+        <div class="previous" @click="previous()">
+            <a-icon type="double-left"/>
+        </div>
+        <a-row :gutter="16">
+            <a-col class="bt_16" :md="md" :sm="sm" :xs="xs" v-for="topic in res.results" :key="topic.id">
+                <TopicCard :topic="topic" :icon="icon" :label="label"/>
+            </a-col>
+        </a-row>
+        <div class="next" @click="next()">
+            <a-icon type="double-right"/>
+        </div>
+    </div>
 </template>
 
 <script>
@@ -31,7 +39,7 @@
             },
             pageSize: {
                 type: Number,
-                default: 10
+                default: 4
             },
             md: {
                 type: Number,
@@ -59,14 +67,55 @@
         },
         data() {
             return {
-                total: this.data.total,
-                topics: this.data.results,
+                res: this.data,
                 current: this.query.page
             }
         },
+        methods: {
+            async next() {
+                if (this.current === this.lastPage) {
+                    this.current = 1
+                } else {
+                    this.current = this.current + 1
+                }
+                await this.fetch()
+            },
+            async previous() {
+                if (this.current === 1) {
+                    this.current = this.lastPage
+                } else {
+                    this.current = this.current - 1
+                }
+                await this.fetch()
+            },
+            async fetch() {
+                this.res = await this.$axios.$get('/fact/topics/?page_size=4&page=' + this.current)
+            }
+        },
+        computed: {
+            lastPage() {
+                return Math.floor(this.res.total / this.pageSize)
+            }
+        }
     }
 </script>
 
-<style scoped>
+<style lang="scss">
+    .topics {
+        position: relative;
 
+        .next, .previous {
+            position: absolute;
+            top: calc(50% - 10px);
+            cursor: pointer;
+        }
+
+        .next {
+            right: -30px;
+        }
+
+        .previous {
+            left: -30px;
+        }
+    }
 </style>

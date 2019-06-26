@@ -24,7 +24,7 @@
                     </div>
                 </div>
             </div>
-            <a-row>
+            <a-row class="tags">
                 <a-col :span="6">
                     <a-popover title="Rating">
                         <template slot="content">
@@ -72,10 +72,9 @@
                         <a-icon type="tag"/>
                         <span>{{topic.name}} </span>
                     </nuxt-link>
-                    <a-button v-if="fact.source && typeof fact.source === 'object'" size="small" style="float: right"
-                              @click="showSource = !showSource">
+                    <a-tag v-if="fact.source && typeof fact.source === 'object'" @click="showSource = !showSource">
                         <a-icon type="dash"/>
-                    </a-button>
+                    </a-tag>
                 </a-col>
             </a-row>
             <a-card class="gray" style="margin-top: 16px" v-if="showSource">

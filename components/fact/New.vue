@@ -13,13 +13,11 @@
             </a-col>
             <a-col :md="19" :xs="16">
                 <div v-for="fact in facts" :key="fact.id">
-                    <div style="display: inline;">
-                        <a-tag>
-                            <nuxt-link :to="`/member/${fact.user.username}`">
-                                <a-icon type="user" />
-                                <span>{{convertName(fact.user)}}</span>
-                            </nuxt-link>
-                        </a-tag>
+                    <div class="tags">
+                        <nuxt-link class="ant-tag" :to="`/member/${fact.user.username}`">
+                            <a-icon type="user" />
+                            <span>{{convertName(fact.user)}}</span>
+                        </nuxt-link>
                         <nuxt-link
                             v-for="topic in fact.topics" :key="topic.id" class="ant-tag"
                             :to="`/topic/${topic.slug}/`">

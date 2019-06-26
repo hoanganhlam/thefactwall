@@ -1,7 +1,7 @@
 <template>
     <div>
         <a-layout>
-            <TopicList label="trending" :data="home.hot_topic"></TopicList>
+            <TopicList label="trending" :data="home.hot_topic"/>
         </a-layout>
         <a-layout>
             <a-row :gutter="16">

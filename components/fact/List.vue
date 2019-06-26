@@ -1,11 +1,11 @@
 <template>
     <div class="ant-list ant-list-vertical ant-list-lg ant-list-split">
-        <a-card class="fact-card" v-for="fact in facts" :key="fact.id" :bordered="false">
+        <a-card bordered class="fact-card bt_16" v-for="fact in facts" :key="fact.id">
             <a-skeleton :loading="loading" active avatar>
                 <FactCard :fact="fact"/>
             </a-skeleton>
         </a-card>
-        <a-card :bordered="false" v-if="pageSize  * current < total">
+        <a-card :body-style="{padding: 0}" :bordered="false" v-if="pageSize  * current < total">
             <a-pagination
                 :pageSize="pageSize"
                 :total="total"

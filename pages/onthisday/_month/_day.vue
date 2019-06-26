@@ -16,7 +16,7 @@
                                 </div>
                             </div>
                         </a-card>
-                        <a-card :body-style="{padding: 0}">
+                        <a-card :bordered="false" :body-style="{padding: 0}">
                             <FactList :data="res" :query="query" :page-size="10"/>
                         </a-card>
                     </a-layout-content>

@@ -4,10 +4,8 @@
             <a-row :gutter="16">
                 <a-col class="gutter-row" :md="16" :xs="24">
                     <a-layout-content :style="{ minHeight: '700px' }">
-                        <a-card :body-style="{padding: 0}">
-                            <a-card :bordered="false" :body-style="{paddingBottom: 0}">
-                                <h1>{{capitalizeFirst(this.title)}}</h1>
-                            </a-card>
+                        <a-card :bordered="false" :body-style="{padding: 0}">
+                            <h1>{{capitalizeFirst(this.title)}}</h1>
                             <FactList :data="fact" :query="query" :page-size="10"/>
                         </a-card>
                     </a-layout-content>

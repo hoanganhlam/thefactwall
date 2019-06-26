@@ -25,10 +25,8 @@
                                 </div>
                             </div>
                         </a-card>
-                        <a-card :body-style="{padding: 0}">
-                            <a-card :bordered="false" :body-style="{paddingBottom: 0}">
-                                <h1 class="uppercase">Facts by {{convertName(user)}}</h1>
-                            </a-card>
+                        <a-card :bordered="false" :body-style="{padding: 0}">
+                            <h1 class="uppercase">Facts by {{convertName(user)}}</h1>
                             <FactList :data="res" :query="query" :page-size="10"/>
                         </a-card>
                     </a-layout-content>

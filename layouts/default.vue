@@ -38,7 +38,7 @@
             :width="520"
             :visible="visible"
             @close="visible = false"
-            :wrapStyle="{height: 'calc(100% - 108px)',overflow: 'auto',paddingBottom: '108px'}">
+            :wrapStyle="{overflow: 'auto'}">
             <PostFact/>
         </a-drawer>
     </a-layout>

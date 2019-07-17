@@ -40,13 +40,13 @@ Vue.mixin({
             return string.charAt(0).toUpperCase() + string.slice(1);
         },
         convertName(user) {
-            if (user.first_name || user.last_name) {
-                return user.first_name + ' ' + user.last_name
+            if (user.firstName || user.lastName) {
+                return user.firstName + ' ' + user.lastName
             }
             return user.username
         },
         formatDate(dateStr) {
-            return moment(dateStr).format('YYYY-MM-DD')
+            return new moment(dateStr, 'YYYY-MM-DD').format('YYYY-MM-DD')
         }
     }
 })

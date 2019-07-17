@@ -1,11 +1,11 @@
 <template>
     <div class="ant-list ant-list-vertical ant-list-lg ant-list-split">
-        <a-card bordered class="fact-card bt_16" v-for="fact in facts" :key="fact.id">
+        <div class="fact-card bt_16" v-for="fact in facts" :key="fact.id">
             <a-skeleton :loading="loading" active avatar>
                 <FactCard :fact="fact"/>
             </a-skeleton>
-        </a-card>
-        <a-card :body-style="{padding: 0}" :bordered="false" v-if="pageSize  * current < total">
+        </div>
+        <a-card class="gray" :body-style="{padding: 0}" :bordered="false" v-if="pageSize  * current < total">
             <a-pagination
                 :pageSize="pageSize"
                 :total="total"
@@ -57,14 +57,9 @@
         methods: {
             async fetch(page) {
                 this.loading = true
-                let query = '?page_size=' + this.pageSize
+                this.queryTemp.pageSize =  this.pageSize
                 this.queryTemp.page = page
-                for (let field in this.queryTemp) {
-                    if (this.queryTemp[field]) {
-                        query = query + `&${field}=${this.queryTemp[field]}`
-                    }
-                }
-                let res = await this.$axios.$get(`/fact/facts/${query}`)
+                let res = await this.$api.fact.list(this.queryTemp)
                 this.total = res.total
                 this.facts = res.results
                 this.loading = false

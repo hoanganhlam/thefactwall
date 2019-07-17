@@ -4,10 +4,10 @@
             <a-row :gutter="16">
                 <a-col class="gutter-row" :md="16" :xs="24">
                     <a-layout-content :style="{ minHeight: '700px' }">
-                        <a-card class="bt_16 gray">
+                        <a-card class="bt_16">
                             <div class="ant-list-item-meta">
                                 <div class="ant-list-item-meta-avatar">
-                                    <a-badge :count="topic.fact.total">
+                                    <a-badge :count="fact.total">
                                         <a-avatar v-if="topic.media && topic.media.id" shape="square" style="width: 150px; height: 150px;">
                                             <img :src="api_domain + topic.media.thumbnails.thumb_150_150">
                                         </a-avatar>
@@ -15,16 +15,16 @@
                                     </a-badge>
                                 </div>
                                 <div class="ant-list-item-meta-content">
-                                    <h3 class="ant-list-item-meta-title">{{topic.name}}</h3>
+                                    <h3 class="ant-list-item-meta-title">{{topic.title}}</h3>
                                     <div class="ant-list-item-meta-description">
                                         <p>{{topic.description}}</p>
                                     </div>
                                 </div>
                             </div>
                         </a-card>
-                        <a-card :bordered="false" :body-style="{padding: 0}">
-                            <h1 class="uppercase">{{capitalizeFirst(this.title)}}</h1>
-                            <FactList :data="topic.fact" :query="query" :page-size="10"/>
+                        <a-card class="gray" :bordered="false" :body-style="{padding: 0}">
+                            <h1 style="font-size: 18px">{{capitalizeFirst(title)}}</h1>
+                            <FactList :data="fact" :query="query" :page-size="10"/>
                         </a-card>
                     </a-layout-content>
                 </a-col>
@@ -33,7 +33,7 @@
                         <a-card title="Contributors" class="bt_16">
                             <user-card
                                 class="bt_16"
-                                v-for="contributor in topic.contributors"
+                                v-for="contributor in contributors"
                                 :key="contributor.id"
                                 :user="contributor"/>
                         </a-card>
@@ -54,17 +54,19 @@
             }
         },
         async asyncData({app, params, query}) {
-            let res = await app.$axios.$get(`/fact/topics/${params.slug}/`)
+            let {instance, fact, contributors} = await app.$api.taxonomy.get(params.slug)
             if (typeof params.sub === 'undefined') {
                 params.sub = 'facts'
             } else {
                 params.sub = params.sub + ' facts'
             }
-            query.topic = res.id
+            query.taxonomy = instance._id
             return {
-                topic: res,
-                title: params.sub + ' about ' + res.name,
-                query: query
+                topic: instance,
+                title: params.sub + ' about ' + instance.title,
+                query: query,
+                fact,
+                contributors
             }
         },
         data() {

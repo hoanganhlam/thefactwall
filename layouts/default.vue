@@ -4,27 +4,34 @@
             <n-link to="/" class="logo">
                 <img src="/logo.jpg" alt="">
             </n-link>
-            <a-menu theme="dark" mode="horizontal"
-                :style="{ lineHeight: '45px', float: 'left' }">
-                <a-menu-item key="1">
+            <a-menu theme="dark" mode="horizontal" v-model="current"
+                    :style="{ lineHeight: '45px', float: 'left' }">
+                <a-menu-item key="/">
+                </a-menu-item>
+                <a-menu-item key="/reaction/wtf">
                     <n-link to="/reaction/wtf">WTF</n-link>
                 </a-menu-item>
-                <a-menu-item key="2">
+                <a-menu-item key="/reaction/interesting">
                     <n-link to="/reaction/interesting">Interesting</n-link>
                 </a-menu-item>
-                <a-menu-item key="3">
+                <a-menu-item key="/reaction/unbelievable">
                     <n-link to="/reaction/unbelievable">Unbelievable</n-link>
                 </a-menu-item>
-                <a-menu-item key="4">
+                <a-menu-item key="/reaction/fun">
                     <n-link to="/reaction/fun">Fun</n-link>
                 </a-menu-item>
-                <a-menu-item key="5">
+                <a-menu-item key="/onthisday">
                     <n-link to="/onthisday">On This Day</n-link>
                 </a-menu-item>
             </a-menu>
             <div style="float: right">
                 <a-button @click="visible = true" type="primary">
-                    <a-icon type="edit" /> Post</a-button>
+                    <a-icon type="edit"/>
+                    Post
+                </a-button>
+                <n-link v-if="$auth.loggedIn" class="ant-btn" to="/member/me">
+                    <a-icon type="user"/>
+                </n-link>
             </div>
         </a-layout-header>
         <a-layout-content class="master">
@@ -49,8 +56,10 @@
 
     export default {
         data() {
+            let current = [this.$route.path]
             return {
                 visible: false,
+                current
             }
         },
         components: {

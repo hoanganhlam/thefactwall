@@ -2,9 +2,9 @@
     <div class="ant-list-item-meta">
         <div class="ant-list-item-meta-avatar">
             <div class="ant-avatar ant-avatar-circle ant-avatar-image">
-                <img v-if="user.avatar && user.avatar.id" :alt="user.username"
-                     :src="api_domain + user.avatar.thumbnails.thumb_150_150">
-                <img alt="Empty Avatar" v-else src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png">
+                <img v-if="avatar && avatar._id" :alt="user.username"
+                     :src="'/' + avatar.size['100_100']">
+                <a-avatar v-else shape="square" icon="user"/>
             </div>
         </div>
         <div class="ant-list-item-meta-content">
@@ -13,6 +13,7 @@
             </h4>
             <slot></slot>
         </div>
+        <slot name="right"></slot>
     </div>
 </template>
 
@@ -22,6 +23,18 @@
         props: {
             user: {
 
+            }
+        },
+        computed: {
+            avatar() {
+                if (this.user.avatar) {
+                    if (this.user.avatar._id) {
+                        return this.user.avatar
+                    } else if (this.user.avatar.length) {
+                        return this.user.avatar[0]
+                    }
+                }
+                return null
             }
         }
     }

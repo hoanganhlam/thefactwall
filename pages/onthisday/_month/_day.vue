@@ -4,7 +4,7 @@
             <a-row :gutter="16">
                 <a-col class="gutter-row" :md="16" :xs="24">
                     <a-layout-content :style="{ minHeight: '700px' }">
-                        <a-card class="bt_16 gray">
+                        <a-card class="bt_16">
                             <div class="ant-list-item-meta">
                                 <div class="ant-list-item-meta-avatar">
                                     <a-badge :count="res.total">
@@ -12,11 +12,11 @@
                                     </a-badge>
                                 </div>
                                 <div class="ant-list-item-meta-content">
-                                    <h1 class="ant-list-item-meta-title">{{title}} facts</h1>
+                                    <h1 class="ant-list-item-meta-title">{{title}} Facts</h1>
                                 </div>
                             </div>
                         </a-card>
-                        <a-card :bordered="false" :body-style="{padding: 0}">
+                        <a-card class="gray" :bordered="false" :body-style="{padding: 0}">
                             <FactList :data="res" :query="query" :page-size="10"/>
                         </a-card>
                     </a-layout-content>
@@ -56,7 +56,7 @@
         async asyncData({app, params, query}) {
             let qStr = '', title = ''
             let today = new moment()
-            if (typeof params.month === 'undefined'&& typeof params.day === 'undefined') {
+            if (typeof params.month === 'undefined' && typeof params.day === 'undefined') {
                 query.day = today.date()
                 query.month = today.month() + 1
                 title = 'On This Day'
@@ -71,12 +71,8 @@
                 query.month = params.month
                 title = today.format('MMMM')
             }
-            for (let field in query) {
-                if (query[field]) {
-                    qStr = qStr + `&${field}=${query[field]}`
-                }
-            }
-            let res = await app.$axios.$get(`/fact/facts/?page_size=10${qStr}`)
+            query.pageSize = 10
+            let res = await app.$api.fact.list(query)
             return {
                 res: res,
                 title,

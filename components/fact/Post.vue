@@ -6,14 +6,12 @@
                 v-else
                 layout="vertical"
                 id="components-form-demo-normal-login"
-                :form="factForm"
-                class="login-form"
-                @submit="handleSubmit">
+                class="login-form">
                 <div class="ant-row ant-form-item">
                     <div class="ant-form-item-label">
                         <label title="Topics" class="">Topics</label>
                         <span style="cursor: pointer; float: right" @click="visible = true">
-                            <a-icon type="plus"/> add
+                            <a-icon type="plus"/>
                         </span>
                     </div>
                     <div class="ant-form-item-control-wrapper">
@@ -21,7 +19,7 @@
                             <div class="ant-form-item-children">
                                 <a-select
                                     mode="multiple"
-                                    :value="selectedTopic"
+                                    :value="form.taxonomies"
                                     placeholder="Select topics"
                                     style="width: 100%"
                                     :filterOption="false"
@@ -29,37 +27,37 @@
                                     @change="handleChange"
                                     :notFoundContent="fetching ? undefined : null">
                                     <a-spin v-if="fetching" slot="notFoundContent" size="small"/>
-                                    <a-select-option v-for="d in topics" :key="d.id">{{d.name}}</a-select-option>
+                                    <a-select-option v-for="d in topics" :key="d._id">{{d.title}}</a-select-option>
                                 </a-select>
                             </div>
                         </div>
                     </div>
                 </div>
                 <a-form-item label="Title">
-                    <a-textarea
-                        v-decorator="['short',{rules: [{ required: true, message: 'Please input summary!' }]}]"
-                        placeholder="Title or summary" autosize/>
+                    <a-textarea v-model="form.contentShort" placeholder="Title or summary" autosize/>
                 </a-form-item>
                 <a-form-item label="More detail.....">
-                    <a-textarea v-decorator="['long']" placeholder="fact's detail" :autosize="{ minRows: 3 }"/>
+                    <a-textarea v-model="form.contentLong" placeholder="fact's detail"/>
                 </a-form-item>
                 <a-form-item label="Source">
                     <a-card>
-                        <a-input @blur="fetchUrl" v-model="source.url" placeholder="https://..."/>
+                        <a-input @blur="fetchUrl" v-model="form.source.url" placeholder="https://..."/>
                         <a-divider>or</a-divider>
-                        <a-input v-model="source.title" style="margin-bottom: 10px" placeholder="From..."/>
-                        <a-textarea v-model="source.description" placeholder="Description..."
+                        <a-input v-model="form.source.title" style="margin-bottom: 10px" placeholder="From..."/>
+                        <a-textarea v-model="form.source.description" placeholder="Description..."
                                     :autosize="{ minRows: 2 }"/>
                     </a-card>
                 </a-form-item>
                 <a-form-item label="Date">
-                    <a-date-picker v-model="date" format="YYYY-MM-DD" />
+                    <a-date-picker v-model="form.date" format="YYYY-MM-D"/>
                 </a-form-item>
-                <a-form-item label="Photo">
-                    <Uploader @uploaded="photo = $event"/>
+                <a-form-item label="Media">
+                    <Uploader @uploaded="form.photo = $event ? $event._id: null"/>
                 </a-form-item>
                 <a-form-item>
-                    <a-button class="full-width" type="primary" html-type="submit">Post</a-button>
+                    <a-button class="full-width" type="primary" @click="handleSubmit">
+                        {{fact ? 'Update': 'Post'}}
+                    </a-button>
                 </a-form-item>
             </a-form>
         </a-col>
@@ -77,80 +75,65 @@
 
     export default {
         name: "Post",
-        beforeCreate() {
-            this.factForm = this.$form.createForm(this);
-        },
+        props: ['fact'],
         data() {
             this.fetchTopic = debounce(this.fetchTopic, 500);
+            this.fetchUrl = debounce(this.fetchUrl, 500);
             return {
                 topics: [],
-                selectedTopic: [],
                 fetching: false,
-                photo: null,
-                source: {
-                    url: null,
-                    title: null,
-                    description: null
-                },
                 visible: false,
                 topicName: null,
-                date: null
+                form: {
+                    contentShort: null,
+                    contentLong: null,
+                    photo: null,
+                    taxonomies: [],
+                    source: {
+                        url: null,
+                        title: null,
+                        description: null
+                    },
+                    date: moment().utc(),
+                },
             }
         },
-
         methods: {
             fetchTopic(value) {
                 this.data = []
                 this.fetching = true
-                this.$axios.$get(`/fact/topics/?search=${value}`).then(res => {
+                this.$api.taxonomy.list({search: value}).then(res => {
                     this.topics = res.results
                     this.fetching = false
                 })
             },
-            handleSubmit(e) {
-                let _this = this
-                e.preventDefault();
-                this.factForm.validateFields((err, values) => {
-                    if (!err) {
-                        if (_this.date) {
-                            values.date = moment(_this.date).format('YYYY-MM-DD HH:mm')
-                        }
-                        if (_this.selectedTopic.length) {
-                            values.topics = _this.selectedTopic
-                        }
-                        if (_this.photo) {
-                            values.media = _this.photo.id
-                        }
-                        if (_this.source.url || _this.source.title) {
-                            values.source = _this.source
-                        }
-                        this.$axios.$post('/fact/facts/', values).then(res => {
-                            values.short = null
-                            values.log = null
-                            _this.selectedTopic = []
-                            _this.photo = null
-                            this.$router.replace({path: '/' + res.id})
-                        })
-                    }
-                });
+            handleSubmit() {
+                if (this.fact && this.fact._id) {
+                    this.$api.fact.update(this.fact._id, this.form).then(res => {
+                        this.$router.replace({path: '/' + this.fact._id})
+                    })
+                } else {
+                    this.$api.fact.post(this.form).then(res => {
+                        this.$router.replace({path: '/' + res._id})
+                    })
+                }
             },
             handleChange(selectedTopic) {
-                this.selectedTopic = selectedTopic
+                this.form.taxonomies = selectedTopic
             },
             async fetchUrl() {
                 let regexUrl = new RegExp(/[-a-zA-Z0-9@:%_\+.~#?&//=]{2,256}\.[a-z]{2,4}\b(\/[-a-zA-Z0-9@:%_\+.~#?&//=]*)?/gi);
-                if (this.source.url.match(regexUrl)) {
-                    await this.$axios.get('/fact/fetch-url?url=' + this.source.url).then(res => {
-                        this.source.title = res.data.title
-                        this.source.description = res.data.description
+                if (this.form.source.url && this.form.source.url.match(regexUrl)) {
+                    await this.$axios.get('/utilities/scrape?url=' + this.form.source.url).then(res => {
+                        this.form.source.title = res.data.title
+                        this.form.source.description = res.data.metaDescription
                     })
                 }
             },
             async createTopic() {
-                let res = await this.$axios.$post('/fact/topics/', {
-                    name: this.topicName
-                })
+                let res = await this.$api.taxonomy.post({title: this.topicName})
                 this.topics.push(res)
+                this.form.taxonomies.push(res._id)
                 this.visible = false
                 this.topicName = null
             }
@@ -161,6 +144,24 @@
             VNodes: {
                 functional: true,
                 render: (h, ctx) => ctx.props.vnodes
+            }
+        },
+        created() {
+            if (this.fact) {
+                this.topics = this.fact.taxonomies
+                for (let field in this.fact) {
+                    if (this.fact[field] && field !== '_id') {
+                        if (field === 'taxonomies') {
+                            this.form[field] = this.fact[field].map(x => x._id)
+                        } else if (field === 'media') {
+                            this.form[field] = this.fact[field]._id
+                        } else if (field === 'date') {
+                            this.form[field] = moment(this.fact[field], 'YYYY-MM-DD')
+                        } else {
+                            this.form[field] = this.fact[field]
+                        }
+                    }
+                }
             }
         }
     }

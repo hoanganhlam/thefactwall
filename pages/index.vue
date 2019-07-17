@@ -1,15 +1,18 @@
 <template>
     <div>
         <a-layout>
-            <TopicList label="trending" :data="home.hot_topic"/>
+            <TopicList class="bt_16" label="trending" :data="home.hotTopic"/>
         </a-layout>
         <a-layout>
             <a-row :gutter="16">
+                <a-col :md="24">
+                    <FactNew :data="home.newFact"/>
+                </a-col>
                 <a-col class="gutter-row bt_16" :md="16" :xs="24">
-                    <FactNew :data="home.new_fact"/>
-                    <a-card :bordered="false" :body-style="{padding: 0}">
+
+                    <a-card class="gray" :bordered="false" :body-style="{padding: 0}">
                         <h4 class="uppercase">Popular Facts</h4>
-                        <FactList :data="home.hot_fact"/>
+                        <FactList :data="home.hotFact" :query="{ordering: 'popular'}"/>
                     </a-card>
                 </a-col>
                 <a-col class="gutter-row" :md="8" :xs="24">
@@ -27,14 +30,14 @@
                                     <n-link to="/onthisday">On this day</n-link>
                                 </h4>
                             </a-card>
-                            <a-card
-                                :bordered="false"
-                                v-for="fact in home.today.results"
-                                :key="fact.id"
-                                class="fact-card gray">
-                                <span class="ant-tag">{{moment(fact.date).year()}}</span>
-                                <span>{{fact.short}}</span>
-                            </a-card>
+                            <!--<a-card-->
+                            <!--:bordered="false"-->
+                            <!--v-for="fact in home.today.results"-->
+                            <!--:key="fact.id"-->
+                            <!--class="fact-card gray">-->
+                            <!--<span class="ant-tag">{{moment(fact.date).year()}}</span>-->
+                            <!--<span>{{fact.short}}</span>-->
+                            <!--</a-card>-->
                         </a-card>
                     </a-layout-sider>
                 </a-col>
@@ -59,9 +62,14 @@
             }
         },
         async asyncData({app}) {
-            let home = await app.$axios.$get('/fact/home/')
+            let {n, p, t, c} = await app.$axios.$get('/home/')
             return {
-                home
+                home: {
+                    hotTopic: t,
+                    newFact: n,
+                    hotFact: p,
+                    contributor: c
+                }
             }
         }
     }

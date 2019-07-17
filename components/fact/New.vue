@@ -1,38 +1,42 @@
 <template>
-    <a-card class="fact-card bt_16">
-        <a-row type="flex" justify="space-around" align="middle">
-            <a-col :md="5" :xs="8">
-                <a-button-group>
-                    <a-button @click="handle_click(true)">
-                        <a-icon type="left"/>
-                    </a-button>
-                    <a-button @click="handle_click(false)">
-                        <a-icon type="right"/>
-                    </a-button>
-                </a-button-group>
-            </a-col>
-            <a-col :md="19" :xs="16">
-                <div v-for="fact in facts" :key="fact.id">
-                    <div class="tags">
-                        <nuxt-link class="ant-tag" :to="`/member/${fact.user.username}`">
-                            <a-icon type="user" />
-                            <span>{{convertName(fact.user)}}</span>
-                        </nuxt-link>
-                        <nuxt-link
-                            v-for="topic in fact.topics" :key="topic.id" class="ant-tag"
-                            :to="`/topic/${topic.slug}/`">
-                            <a-icon type="tag" />
-                            <span>{{topic.name}}</span>
-                        </nuxt-link>
-                    </div>
-                    <q style="font-size: 20px">
-                        <n-link :to="`/${fact.id}`">{{fact.short}}</n-link>
-                    </q>
-                </div>
-            </a-col>
-            <span class="label">New</span>
-        </a-row>
-    </a-card>
+    <div class="ant-card ant-card-bordered fact-card bt_32">
+        <div class="ant-card-head">
+            <div class="ant-card-head-wrapper">
+                <a-row type="flex" justify="space-around" align="middle">
+                    <a-col :md="5" :xs="8">
+                        <a-button-group>
+                            <a-button @click="handle_click(true)">
+                                <a-icon type="left"/>
+                            </a-button>
+                            <a-button @click="handle_click(false)">
+                                <a-icon type="right"/>
+                            </a-button>
+                        </a-button-group>
+                    </a-col>
+                    <a-col :md="19" :xs="16">
+                        <div v-for="fact in facts" :key="fact._id">
+                            <div class="tags">
+                                <nuxt-link class="ant-tag" :to="`/member/${fact.user.username}`">
+                                    <a-icon type="user"/>
+                                    <span>{{convertName(fact.user)}}</span>
+                                </nuxt-link>
+                                <nuxt-link
+                                    v-for="topic in fact.taxonomies" :key="topic._id" class="ant-tag"
+                                    :to="`/topic/${topic.slug}/`">
+                                    <a-icon type="tag"/>
+                                    <span>{{topic.title}}</span>
+                                </nuxt-link>
+                            </div>
+                            <q>
+                                <n-link :to="`/${fact._id}`">{{fact.contentShort}}</n-link>
+                            </q>
+                        </div>
+                    </a-col>
+                    <span class="label">New</span>
+                </a-row>
+            </div>
+        </div>
+    </div>
 </template>
 
 <script>
@@ -74,8 +78,12 @@
                 await this.fetch()
             },
             async fetch() {
-                let query = '?page_size=1&ordering=-id&page=' + this.current
-                let res = await this.$axios.$get(`/fact/facts/${query}`)
+                let query = {
+                    pageSize: 1,
+                    ordering: 'newest',
+                    page: this.current
+                }
+                let res = await this.$api.fact.list(query)
                 this.total = res.total
                 this.facts = res.results
             },

@@ -4,37 +4,31 @@
         :form="form"
         class="login-form"
         @submit="handleSubmit">
-        <a-form-item>
-            <a-input
-                v-decorator="[
-                    'email',
-                    { rules: [{ required: true, message: 'Please input your username!' }] }
-                ]"
-                placeholder="Username">
+        <a-form-item v-if="!login">
+            <a-input placeholder="Username" v-model="form.username">
+                <a-icon slot="prefix" type="user" style="color: rgba(0,0,0,.25)"/>
+            </a-input>
+        </a-form-item>
+        <a-form-item v-if="!login">
+            <a-input placeholder="Name" v-model="form.name">
                 <a-icon slot="prefix" type="user" style="color: rgba(0,0,0,.25)"/>
             </a-input>
         </a-form-item>
         <a-form-item>
-            <a-input
-                v-decorator="[
-                    'password',
-                    { rules: [{ required: true, message: 'Please input your Password!' }] }
-                ]"
-                type="password" placeholder="Password">
+            <a-input placeholder="Email" v-model="form.email">
+                <a-icon slot="prefix" type="user" style="color: rgba(0,0,0,.25)"/>
+            </a-input>
+        </a-form-item>
+        <a-form-item>
+            <a-input type="password" placeholder="Password" v-model="form.password">
                 <a-icon slot="prefix" type="lock" style="color: rgba(0,0,0,.25)"/>
             </a-input>
         </a-form-item>
         <a-form-item>
-            <a-checkbox
-                v-decorator="[
-                    'remember',
-                    {valuePropName: 'checked',initialValue: true,
-                    }
-                ]">Remember me
-            </a-checkbox>
-            <a class="login-form-forgot" href="">Forgot password</a>
-            <a-button type="primary" html-type="submit" class="login-form-button">Log in</a-button>
-            <div>Or <a href="">register now!</a></div>
+            <a-checkbox>Remember me</a-checkbox>
+            <div><a class="login-form-forgot" href="">Forgot password</a></div>
+            <a-button type="primary" @click="handleSubmit">{{login?'Login':'Register'}}</a-button>
+            <div>Or <span class="clickable" @click="login = !login">{{login?'Register':' Login'}}</span></div>
         </a-form-item>
     </a-form>
 </template>
@@ -46,44 +40,30 @@
         },
         data: () => {
             return {
+                form: {
+                    username: null,
+                    email: null,
+                    name: null,
+                    password: null
+                },
+                login: true,
                 validForm: {}
             }
         },
         methods: {
-            handleSubmit(e) {
-                let _this = this
-                e.preventDefault();
-                this.form.validateFields((err, values) => {
-                    if (!err) {
-                        _this.loading = true
-                        _this.$auth
-                            .loginWith('local', {
-                                data: values
-                            })
-                            .then(res => {
-                                console.log(res)
-                            })
-                            .catch(err => {
-                                console.log(err)
-                            }).finally(() => {
-                            this.loading = false
-                        })
-                    }
-                });
-            },
+            async handleSubmit() {
+                if (this.login) {
+                    let res = await this.$auth.loginWith('local', {
+                        data: this.form
+                    })
+                    console.log(res);
+                } else {
+                    await this.$api.user.post(this.form)
+                }
+            }
         },
     };
 </script>
 <style>
-    #components-form-demo-normal-login .login-form {
-        max-width: 300px;
-    }
 
-    #components-form-demo-normal-login .login-form-forgot {
-        float: right;
-    }
-
-    #components-form-demo-normal-login .login-form-button {
-        width: 100%;
-    }
 </style>

@@ -16,16 +16,17 @@ exports.create = async (req, res, next) => {
     let data = getBody(req, [
         'title', 'contentLong', 'taxSlugs', 'photo',
         'contentShort', 'source', 'taxonomies', 'date']);
-    if (data.taxSlugs && data.taxSlugs.length) {
-        let taxonomies = await TaxonomyModel.find({'slug': {$in: data.taxSlugs}})
-        instance.taxonomies = taxonomies.map(x => x._id)
-    }
+
     try {
         let test = await FactModel.find({contentShort: data.contentShort});
         if (test.length) {
             return res.json(test[0]);
         }
         let instance = new FactModel(data)
+        if (data.taxSlugs && data.taxSlugs.length) {
+            let taxonomies = await TaxonomyModel.find({'slug': {$in: data.taxSlugs}})
+            instance.taxonomies = taxonomies.map(x => x._id)
+        }
         instance.user = user
         await instance.save().then(() => {
             return res.json(instance)

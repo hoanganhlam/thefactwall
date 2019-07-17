@@ -28,39 +28,59 @@
     margin-bottom: 16px;
 }
 
+.bt_32 {
+    margin-bottom: 32px;
+}
+
 .uppercase {
     text-transform: uppercase;
 }
 
 .fact-card {
-    border-bottom: 1px solid #EEE;
     position: relative;
-
-    &:last-child {
-        border-bottom: 0;
-    }
 
     .ant-list-item-meta-title {
         margin-bottom: 0;
         font-size: 14px;
-        line-height: 1.5;
+        line-height: 1;
     }
 
     .ant-list-vertical .ant-list-item-meta {
         margin-bottom: 0;
-        line-height: 1;
-    }
-
-    .ant-list-item-content {
-        font-size: 16px;
-    }
-
-    .ant-card {
-        font-size: 12px;
     }
 
     .ant-row {
         width: 100%;
+    }
+
+    .ant-card-head-title {
+        text-overflow: unset;
+        overflow: unset;
+        white-space: unset;
+    }
+
+    .ant-card-head {
+        padding: 16px;
+        font-size: 1.5rem;
+        line-height: 1.3;
+
+        .featured {
+            margin-right: 16px;
+            width: 100px;
+            min-width: 100px;
+        }
+
+        a {
+            color: #464646;
+        }
+
+        a.ant-tag {
+            color: #22890e;
+        }
+    }
+
+    .ant-list-item-meta-description {
+        float: left;
     }
 }
 
@@ -83,15 +103,18 @@
         padding-top: 0;
         padding-bottom: 0;
     }
+
+    .control {
+        position: absolute;
+        right: 10px;
+        top: 10px;
+        cursor: pointer;
+    }
 }
 
-
+.ant-layout-sider,
 .ant-layout {
-    background: #FFF;
-}
-
-h1.uppercase {
-    font-size: 16px;
+    background: #F9F9F9;
 }
 
 h3.ant-list-item-meta-title {
@@ -122,7 +145,7 @@ h3.ant-list-item-meta-title {
 }
 
 .ant-layout-content {
-    min-height: calc(100vh - 135px);
+    min-height: calc(100vh - 70px);
 }
 
 .ant-comment {
@@ -148,6 +171,7 @@ h1 {
 
 .editable-cell {
     position: relative;
+    width: -webkit-fill-available;
 }
 
 .editable-cell-input-wrapper,
@@ -190,19 +214,9 @@ h1 {
     margin-bottom: 8px;
 }
 
-.tags {
-    line-height: 2;
-}
-
 .v-center {
     display: flex;
     align-items: center;
-}
-
-.tags.boxed {
-    margin: -16px;
-    padding: 5px 10px;
-    background: #F9F9F9;
 }
 
 
@@ -220,6 +234,46 @@ h1 {
             color: #FFF;
         }
 
-        background-image: linear-gradient(-0deg, #22890e94, #ffffff00);
+        background-image: linear-gradient(0deg, rgba(0, 0, 0, 0.5), rgba(255, 255, 255, 0));
     }
+}
+
+#components-form-demo-normal-login .login-form {
+    max-width: 300px;
+}
+
+#components-form-demo-normal-login .login-form-forgot {
+    float: right;
+}
+
+#components-form-demo-normal-login .login-form-button {
+    width: 100%;
+}
+
+.clickable {
+    color: #24890d;
+    cursor: pointer;
+}
+
+.ant-btn-circle.square {
+    border-radius: 0;
+}
+
+.ant-avatar-lg.xxl {
+    width: 100px;
+    height: 100px;
+    line-height: 94px;
+
+    .ant-avatar-icon {
+        font-size: 55px;
+    }
+}
+
+.ant-upload.ant-upload-drag {
+    min-width: 100px;
+    min-height: 100px;
+}
+
+.center {
+    text-align: center;
 }

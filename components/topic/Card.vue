@@ -1,11 +1,11 @@
 <template>
     <a-card class="topic-card" hoverable>
-        <img slot="cover" v-if="topic.media && topic.media.id" :alt="topic.name"
-             :src="api_domain + topic.media.thumbnails.thumb_200_250">
+        <img slot="cover" v-if="topic.tempPhotos && topic.tempPhotos.length" :alt="topic.title"
+             :src="topic.tempPhotos[0].size['210_260']">
         <img slot="cover" alt="Empty Avatar" v-else src="https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png">
         <a-card-meta>
             <h3 slot="description">
-                <n-link :to="`/topic/${topic.slug}/`">{{topic.name}}</n-link>
+                <n-link :to="`/topic/${topic.slug}/`">{{topic.title}}</n-link>
             </h3>
         </a-card-meta>
         <span v-if="label" class="label"><a-icon :type="icon" /> {{label}}</span>

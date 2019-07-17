@@ -38,7 +38,9 @@ module.exports = {
         '@/plugins/antd-ui',
         '@/plugins/components',
         '@/plugins/mixins',
+        '@/plugins/repository',
         {src: '@/plugins/axios.js', ssr: true},
+
     ],
     /*
     ** Nuxt.js modules
@@ -53,14 +55,14 @@ module.exports = {
      ** Axios module configuration
      */
     axios: {
-        baseURL: process.env.API_DOMAIN + '/v1'
+        baseURL: process.env.API_DOMAIN + '/api/'
     },
     auth: {
         strategies: {
             local: {
                 endpoints: {
                     login: {
-                        url: '/auth/rest-auth/login/',
+                        url: '/users/login/',
                         method: 'post',
                         propertyName: 'token',
                         headers: {
@@ -70,16 +72,16 @@ module.exports = {
                     },
                     logout: {
                         method: 'post',
-                        url: '/auth/rest-auth/logout/'
+                        url: '/users/logout/'
                     },
                     user: {
-                        url: '/auth/users/me/',
+                        url: '/users/me/',
                         method: 'get',
                         propertyName: ''
                     }
                 },
                 tokenRequired: true,
-                tokenType: 'JWT'
+                tokenType: 'Bearer'
             },
             google: {
                 client_id:
@@ -88,10 +90,10 @@ module.exports = {
             }
         },
         redirect: {
-            login: '/member/login',
-            logout: '/member/logout',
-            callback: '/member/callback',
-            user: '/member/me'
+            login: '/login',
+            logout: '/logout',
+            callback: '/auth/callback',
+            user: '/users/me'
         },
     },
     /*

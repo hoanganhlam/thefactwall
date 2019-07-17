@@ -4,15 +4,25 @@
             <a-row :gutter="16">
                 <a-col class="gutter-row" :md="16" :xs="24">
                     <a-layout-content :style="{ minHeight: '700px' }">
-                        <a-card :bordered="false" :body-style="{padding: 0}">
-                            <h1>{{capitalizeFirst(this.title)}}</h1>
-                            <FactList :data="fact" :query="query" :page-size="10"/>
+                        <a-card class="gray" :bordered="false" :body-style="{padding: 0}">
+                            <a-card class="bt_16">
+                                <div class="ant-list-item-meta">
+                                    <div class="ant-list-item-meta-avatar">
+                                        <a-badge :count="res.total">
+                                            <a-avatar shape="square" icon="calendar"/>
+                                        </a-badge>
+                                    </div>
+                                    <div class="ant-list-item-meta-content">
+                                        <h1 class="ant-list-item-meta-title">{{capitalizeFirst(title)}}</h1>
+                                    </div>
+                                </div>
+                            </a-card>
+                            <FactList :data="res" :query="query" :page-size="10"/>
                         </a-card>
                     </a-layout-content>
                 </a-col>
                 <a-col class="gutter-row" :md="8" :xs="24">
                     <a-layout-sider width="100%">
-
                     </a-layout-sider>
                 </a-col>
             </a-row>
@@ -58,10 +68,11 @@
                     title = 'Bored Facts'
                     break
             }
-            let res = await app.$axios.$get(`/fact/facts/?page_size=10&reaction=${action}`)
             query.action = action
+            query.pageSize = 10
+            let res = await app.$api.fact.list(query)
             return {
-                fact: res,
+                res: res,
                 title: title,
                 query: query
             }

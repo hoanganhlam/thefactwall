@@ -9,12 +9,12 @@
             <p class="ant-upload-drag-icon">
                 <a-icon type="inbox"/>
             </p>
-            <p class="ant-upload-text">Click or drag file to this area to upload</p>
+            <p class="ant-upload-text"></p>
         </a-upload-dragger>
         <div v-else>
             <a-card hoverable style="width: 100%">
-                <img alt="example" :src="photo.file" slot="cover"/>
-                <a-card-meta>
+                <img alt="example" :src="`/${size && photo.size ? photo.size[size] : photo.path}`" slot="cover"/>
+                <a-card-meta v-if="allowUpdate">
                     <a-input @change="handleChange" slot="description" v-model="photo.title" placeholder="Photo's title"/>
                 </a-card-meta>
             </a-card>
@@ -22,6 +22,8 @@
     </div>
 </template>
 <script>
+    import debounce from 'lodash/debounce';
+
     export default {
         name: 'Uploader',
         props: {
@@ -32,9 +34,22 @@
             selected: {
                 type: Object,
                 default: null
+            },
+            text: {
+                type: String,
+                default: 'Click or drag file to this area to upload'
+            },
+            size: {
+                type: String,
+                default: null
+            },
+            allowUpdate: {
+                type: Boolean,
+                default: true
             }
         },
         data() {
+            this.handleChange = debounce(this.handleChange, 500);
             return {
                 fileList: [],
                 singleFile: null,
@@ -50,15 +65,14 @@
             },
             async beforeUpload(file) {
                 let formData = new FormData()
-                formData.append('title', file.name)
                 formData.append('file', file)
-                let res = await this.$axios.$post('/media/medias/', formData)
+                let res = await this.$axios.$post('/files/', formData)
                 this.photo = res
                 this.$emit('uploaded', res)
                 return false;
             },
             async handleChange() {
-                this.$axios.put(`/media/medias/${this.photo.id}/`, {
+                this.$axios.put(`/files/${this.photo._id}/`, {
                     title: this.photo.title
                 })
             }

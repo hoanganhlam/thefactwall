@@ -89,7 +89,7 @@
                 await this.fetch()
             },
             async fetch() {
-                this.res = await this.$axios.$get('/fact/topics/?page_size=4&page=' + this.current)
+                this.res = await this.$api.taxonomy.list({pageSize: 4, page: this.current})
             }
         },
         computed: {

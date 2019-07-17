@@ -6,21 +6,17 @@
             <a-input
                 :value="value"
                 @change="handleChange"
+                :type="type"
                 @pressEnter="check"/>
             <a-icon
                 type="check"
                 class="editable-cell-icon-check"
                 @click="check"/>
         </div>
-        <div
-            v-else
-            class="editable-cell-text-wrapper">
-            {{ value || ' ' }}
-            <a-icon
-                type="edit"
-                class="editable-cell-icon"
-                @click="edit"
-            />
+        <div v-else class="editable-cell-text-wrapper">
+            <n-link v-if="to" :to="to">{{ value || ' ' }}</n-link>
+            <span v-else>{{ value || ' ' }}</span>
+            <a-icon type="edit" class="editable-cell-icon" @click="edit"/>
         </div>
     </div>
 </template>
@@ -29,6 +25,14 @@
         name: 'EditAble',
         props: {
             text: String,
+            type: {
+                type: String,
+                default: 'textarea'
+            },
+            to: {
+                type: String,
+                default: null
+            }
         },
         data() {
             return {

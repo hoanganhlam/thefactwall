@@ -61,7 +61,8 @@
 
     .ant-card-head {
         padding: 16px;
-        font-size: 1.5rem;
+        font-size: 15px;
+        font-weight: normal;
         line-height: 1.3;
 
         .featured {
@@ -81,6 +82,15 @@
 
     .ant-list-item-meta-description {
         float: left;
+    }
+
+    &.success {
+        background: #f6ffed;
+        border: 1px solid #b7eb8f;
+
+        .ant-card-head {
+            border-bottom: 1px solid #b7eb8f;
+        }
     }
 }
 

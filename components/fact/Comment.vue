@@ -51,10 +51,12 @@
         },
         methods: {
             async handleSubmit() {
+                this.$message.config({top: '80%'})
                 this.submitting = true
                 let res = await this.$api.fact.comment(this.factId, this.form)
                 this.results.push(res)
                 this.submitting = false
+                this.$message.success('Comment sent!');
             }
         }
     }

@@ -6,8 +6,6 @@
             </n-link>
             <a-menu theme="dark" mode="horizontal" v-model="current"
                     :style="{ lineHeight: '45px', float: 'left' }">
-                <a-menu-item key="/">
-                </a-menu-item>
                 <a-menu-item key="/reaction/wtf">
                     <n-link to="/reaction/wtf">WTF</n-link>
                 </a-menu-item>

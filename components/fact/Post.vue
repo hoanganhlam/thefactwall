@@ -108,12 +108,16 @@
                 })
             },
             handleSubmit() {
+                this.$message.config({top: '80%'})
                 if (this.fact && this.fact._id) {
                     this.$api.fact.update(this.fact._id, this.form).then(res => {
+                        this.$message.success('Updated successfully!');
+                        this.$emit('done', res)
                         this.$router.replace({path: '/' + this.fact._id})
                     })
                 } else {
                     this.$api.fact.post(this.form).then(res => {
+                        this.$message.success('created successfully!');
                         this.$router.replace({path: '/' + res._id})
                     })
                 }

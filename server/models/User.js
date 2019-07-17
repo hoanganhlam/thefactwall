@@ -73,7 +73,7 @@ UserSchema.methods.toAuthJSON = function () {
     };
 };
 
-UserSchema.methods.toAuthJSON = function () {
+UserSchema.methods.toAuthJSONFor = function () {
     return {
         _id: this._id,
         username: this.username,

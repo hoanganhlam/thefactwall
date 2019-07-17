@@ -6,7 +6,7 @@
         <a-layout>
             <a-row :gutter="16">
                 <a-col :md="24">
-                    <FactNew :data="home.newFact"/>
+                    <FactNew :data="home.newFact" class="bt_32"/>
                 </a-col>
                 <a-col class="gutter-row bt_16" :md="16" :xs="24">
 
@@ -30,14 +30,14 @@
                                     <n-link to="/onthisday">On this day</n-link>
                                 </h4>
                             </a-card>
-                            <!--<a-card-->
-                            <!--:bordered="false"-->
-                            <!--v-for="fact in home.today.results"-->
-                            <!--:key="fact.id"-->
-                            <!--class="fact-card gray">-->
-                            <!--<span class="ant-tag">{{moment(fact.date).year()}}</span>-->
-                            <!--<span>{{fact.short}}</span>-->
-                            <!--</a-card>-->
+                            <a-card
+                                :bordered="false"
+                                v-for="fact in home.otd.results"
+                                :key="fact.id"
+                                class="fact-card gray">
+                                <span class="ant-tag">{{moment(fact.date).year()}}</span>
+                                <span>{{fact.contentShort}}</span>
+                            </a-card>
                         </a-card>
                     </a-layout-sider>
                 </a-col>
@@ -51,6 +51,7 @@
     import FactList from '../components/fact/List'
     import FactNew from '../components/fact/New'
 
+    const moment = require('moment')
     export default {
         name: "index",
         components: {
@@ -62,13 +63,19 @@
             }
         },
         async asyncData({app}) {
-            let {n, p, t, c} = await app.$axios.$get('/home/')
+            let today = new moment()
+            let query = {
+                day: today.date(),
+                month: today.month() + 1
+            }
+            let {n, p, t, c, d} = await app.$axios.$get('/home/', {params: query})
             return {
                 home: {
                     hotTopic: t,
                     newFact: n,
                     hotFact: p,
-                    contributor: c
+                    contributor: c,
+                    otd: d
                 }
             }
         }

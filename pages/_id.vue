@@ -94,7 +94,7 @@
             :visible="isUpdate"
             @ok="handleOk"
             @cancel="handleCancel">
-            <PostFact :fact="fact"/>
+            <PostFact :fact="fact" @done="isUpdate = false"/>
         </a-modal>
     </a-layout>
 </template>

@@ -1,55 +1,57 @@
 <template>
     <a-layout>
-        <a-row :gutter="16">
-            <a-col class="gutter-row" :md="16" :xs="24">
-                <a-layout-content :style="{ minHeight: '700px' }">
-                    <a-card class="bt_16">
-                        <div class="ant-list-item-meta">
-                            <div class="ant-list-item-meta-avatar">
-                                <Uploader style="max-width: 100px" size="100_100" v-if="updating"
-                                          :allow-update="false"
-                                          @uploaded="form.avatar = $event ? $event._id: null"/>
-                                <a-badge :count="res.total" v-else>
-                                    <img v-if="user.avatar && user.avatar._id" :alt="user.username"
-                                         :src="'/' + user.avatar.size['100_100']">
-                                    <a-avatar class="xxl" size="large" v-else shape="square" icon="user"/>
-                                </a-badge>
+        <div class="container">
+            <a-row :gutter="16">
+                <a-col class="gutter-row" :md="16" :xs="24">
+                    <a-layout-content :style="{ minHeight: '700px' }">
+                        <a-card class="bt_16">
+                            <div class="ant-list-item-meta">
+                                <div class="ant-list-item-meta-avatar">
+                                    <Uploader style="max-width: 100px" size="100_100" v-if="updating"
+                                              :allow-update="false"
+                                              @uploaded="form.avatar = $event ? $event._id: null"/>
+                                    <a-badge :count="res.total" v-else>
+                                        <img v-if="user.avatar && user.avatar._id" :alt="user.username"
+                                             :src="'/' + user.avatar.size['100_100']">
+                                        <a-avatar class="xxl" size="large" v-else shape="square" icon="user"/>
+                                    </a-badge>
+                                </div>
+                                <div v-if="updating">
+                                    <a-form-item class="bt_16">
+                                        <a-row :gutter="16">
+                                            <a-col :md="12">
+                                                <a-input v-model="form.firstName" placeholder="First name"/>
+                                            </a-col>
+                                            <a-col :md="12">
+                                                <a-input v-model="form.lastName" placeholder="Last name"/>
+                                            </a-col>
+                                        </a-row>
+                                        <a-input v-model="form.bio" placeholder="Bio"/>
+                                    </a-form-item>
+                                </div>
+                                <div v-else class="ant-list-item-meta-content">
+                                    <h3 class="ant-list-item-meta-title">{{convertName(user)}}</h3>
+                                    <div class="ant-list-item-meta-description">{{user.bio}}</div>
+                                </div>
                             </div>
-                            <div v-if="updating">
-                                <a-form-item class="bt_16">
-                                    <a-row :gutter="16">
-                                        <a-col :md="12">
-                                            <a-input v-model="form.firstName" placeholder="First name"/>
-                                        </a-col>
-                                        <a-col :md="12">
-                                            <a-input v-model="form.lastName" placeholder="Last name"/>
-                                        </a-col>
-                                    </a-row>
-                                    <a-input v-model="form.bio" placeholder="Bio"/>
-                                </a-form-item>
+                            <div class="control" @click="handleUpdate">
+                                <a-icon v-if="updating" type="save"></a-icon>
+                                <a-icon v-else type="edit"></a-icon>
                             </div>
-                            <div v-else class="ant-list-item-meta-content">
-                                <h3 class="ant-list-item-meta-title">{{convertName(user)}}</h3>
-                                <div class="ant-list-item-meta-description">{{user.bio}}</div>
-                            </div>
-                        </div>
-                        <div class="control" @click="handleUpdate">
-                            <a-icon v-if="updating" type="save"></a-icon>
-                            <a-icon v-else type="edit"></a-icon>
-                        </div>
-                    </a-card>
-                    <a-card class="gray" :bordered="false" :body-style="{padding: 0}">
-                        <h1 style="font-size: 16px">Facts by {{convertName(user)}}</h1>
-                        <FactList :data="res" :query="query"/>
-                    </a-card>
-                </a-layout-content>
-            </a-col>
-            <a-col class="gutter-row" :md="8" :xs="24">
-                <a-layout-sider width="100%">
+                        </a-card>
+                        <a-card class="gray" :bordered="false" :body-style="{padding: 0}">
+                            <h1 style="font-size: 16px">Facts by {{convertName(user)}}</h1>
+                            <FactList :data="res" :query="query"/>
+                        </a-card>
+                    </a-layout-content>
+                </a-col>
+                <a-col class="gutter-row" :md="8" :xs="24">
+                    <a-layout-sider width="100%">
 
-                </a-layout-sider>
-            </a-col>
-        </a-row>
+                    </a-layout-sider>
+                </a-col>
+            </a-row>
+        </div>
     </a-layout>
 </template>
 

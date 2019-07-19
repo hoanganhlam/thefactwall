@@ -1,6 +1,6 @@
 <template>
-    <div>
-        <a-layout>
+    <a-layout>
+        <div class="container">
             <a-row :gutter="16">
                 <a-col class="gutter-row" :md="16" :xs="24">
                     <a-layout-content :style="{ minHeight: '700px' }">
@@ -38,8 +38,8 @@
                     </a-layout-sider>
                 </a-col>
             </a-row>
-        </a-layout>
-    </div>
+        </div>
+    </a-layout>
 </template>
 
 <script>

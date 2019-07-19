@@ -25,7 +25,7 @@ exports.create = async (req, res, next) => {
         let instance = new FactModel(data)
         if (data.taxSlugs && data.taxSlugs.length) {
             let taxonomies = await TaxonomyModel.find({'slug': {$in: data.taxSlugs}})
-            instance.taxonomies = taxonomies.map(x => x._id)
+            instance.taxonomies = instance.taxonomies.concat(taxonomies.map(x => x._id))
         }
         instance.user = user
         await instance.save().then(() => {
@@ -116,7 +116,7 @@ exports.list = async (req, res, next) => {
     if (ordering === 'newest') {
         aggregate.push({$sort: {createdAt: -1}})
     } else {
-        aggregate.push({$sort: {score: -1}})
+        aggregate.push({$sort: {score: -1, createdAt: -1}})
     }
     try {
         const results = await FactModel.aggregate(aggregate)

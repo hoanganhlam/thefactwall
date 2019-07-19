@@ -94,8 +94,8 @@
                         title: null,
                         description: null
                     },
-                    date: moment().utc(),
-                },
+                    date: null
+                }
             }
         },
         methods: {

@@ -36,7 +36,7 @@ async function factPopular(user) {
     ]
     const results = await FactModel.aggregate(aggregate)
     const display = await FactModel.aggregate(aggregate)
-        .limit(10)
+        .limit(3)
         .catch(err => {
             console.log(err);
         })
@@ -108,20 +108,43 @@ async function onThisDay(user, query) {
 }
 
 async function factNew(user) {
-    let query = {}
-    const results = await FactModel.find(query)
-    const display = await FactModel.find(query)
-        .populate('user')
-        .populate('taxonomies')
-        .limit(1)
-        .sort({createdAt: -1})
+    let aggregate = [
+        {
+            $addFields: {
+                "isVoted": {
+                    $filter: {
+                        input: "$votes",
+                        as: "vote",
+                        cond: {$eq: ["$$vote.user", user ? user._id : null]}
+                    }
+                },
+            }
+        },
+        {
+            $lookup: {from: 'taxonomies', localField: 'taxonomies', foreignField: '_id', as: 'taxonomies'}
+        },
+        {$lookup: {from: 'File', localField: 'photo', foreignField: '_id', as: 'photo'}},
+        {$lookup: {from: 'User', localField: 'user', foreignField: '_id', as: 'user'}},
+        {$unwind: "$user"},
+        {
+            $lookup: {
+                from: "File",
+                localField: 'user.avatar',
+                foreignField: '_id',
+                as: "user.avatar"
+            }
+        },
+        {$project: {'user.hash': 0, 'user.salt': 0, 'user.email': 0}},
+        {$sort: {createAt: -1}}
+    ]
+    const results = await FactModel.aggregate(aggregate)
+    const display = await FactModel.aggregate(aggregate)
+        .limit(10)
         .catch(err => {
             console.log(err);
         })
     return {
-        results: display.map((x) => {
-            return x.toJSONFor(user)
-        }),
+        results: display,
         currentPage: 1,
         total: results.length
     }
@@ -130,8 +153,9 @@ async function factNew(user) {
 async function taxonomies() {
     let query = {}
     const results = await TaxonomyModel.find(query)
-    const display = await TaxonomyModel.find(query).populate({path: 'facts', populate: {path: 'photo', model: 'File'}})
-        .limit(4)
+    const display = await TaxonomyModel.find(query)
+        .populate({path: 'facts', populate: {path: 'photo', model: 'File'}})
+        .limit(6)
         .catch(err => {
             console.log(err);
         })

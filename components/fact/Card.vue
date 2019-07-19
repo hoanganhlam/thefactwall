@@ -82,14 +82,14 @@
                         </a-popconfirm>
                     </div>
                 </div>
-                <a-card style="margin-top: 16px" v-if="showSource">
-                    <h4 v-if="fact.source.title">
-                        <a target="_blank" v-if="fact.source.url" :href="fact.source.url">{{fact.source.title}}</a>
-                        <span v-else>{{fact.source.title}}</span>
-                    </h4>
-                    <q v-if="fact.source.description">{{fact.source.description}}</q>
-                </a-card>
             </div>
+            <a-card style="margin-top: 16px" v-if="showSource">
+                <h4 v-if="fact.source.title">
+                    <a target="_blank" v-if="fact.source.url" :href="fact.source.url">{{fact.source.title}}</a>
+                    <span v-else>{{fact.source.title}}</span>
+                </h4>
+                <q v-if="fact.source.description">{{fact.source.description}}</q>
+            </a-card>
         </div>
     </div>
 </template>

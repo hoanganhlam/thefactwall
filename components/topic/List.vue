@@ -39,15 +39,15 @@
             },
             pageSize: {
                 type: Number,
-                default: 4
+                default: 6
             },
             md: {
                 type: Number,
-                default: 6
+                default: 4
             },
             sm: {
                 type: Number,
-                default: 12
+                default: 8
             },
             xs: {
                 type: Number,
@@ -89,7 +89,7 @@
                 await this.fetch()
             },
             async fetch() {
-                this.res = await this.$api.taxonomy.list({pageSize: 4, page: this.current})
+                this.res = await this.$api.taxonomy.list({pageSize: this.pageSize, page: this.current})
             }
         },
         computed: {

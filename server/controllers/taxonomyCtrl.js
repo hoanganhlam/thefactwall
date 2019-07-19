@@ -1,8 +1,6 @@
 const {TaxonomyModel, UserModel, FactModel} = require('core-model');
 const {responseError} = require('./response');
 const {getBody} = require('./request');
-const slug = require('slug');
-const mongoose = require('mongoose')
 
 const escapeRegex = (string) => {
     return string.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
@@ -35,11 +33,12 @@ exports.list = async (req, res, next) => {
         const searchQuery = req.query.search || ''
         const regex = new RegExp(escapeRegex(searchQuery), 'gi');
         const results = await TaxonomyModel.find({title: regex})
+            .populate({path: 'facts', populate: {path: 'photo', model: 'File'}})
             .skip((pageSize * page) - pageSize)
             .limit(pageSize);
-        const total = await TaxonomyModel.count();
+        const total = await TaxonomyModel.countDocuments();
         res.json({
-            results: results,
+            results: results.map(x => x.toJsonFor()),
             currentPage: page,
             numPage: Math.ceil(total / pageSize),
             total: total

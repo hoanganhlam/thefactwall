@@ -1,43 +1,43 @@
 <template>
-    <div class="ant-card fact-card success">
-        <div class="ant-card-head">
-            <div class="ant-card-head-wrapper">
-                <a-row type="flex" justify="space-around" align="middle" style="width: 100%;">
-                    <a-col :md="4" :xs="8">
-                        <a-button-group>
-                            <a-button @click="handle_click(true)">
-                                <a-icon type="left"/>
-                            </a-button>
-                            <a-button @click="handle_click(false)">
-                                <a-icon type="right"/>
-                            </a-button>
-                        </a-button-group>
-                    </a-col>
-                    <a-col :md="20" :xs="16">
-                        <div v-for="fact in facts" :key="fact._id">
-                            <div class="bt_16">
-                                <q>
-                                    <n-link :to="`/${fact._id}`">{{fact.contentShort}}</n-link>
-                                </q>
-                            </div>
-                            <div class="tags">
-                                <nuxt-link
-                                    v-for="topic in fact.taxonomies" :key="topic._id" class="ant-tag"
-                                    :to="`/topic/${topic.slug}/`">
-                                    <a-icon type="tag"/>
-                                    <span>{{topic.title}}</span>
-                                </nuxt-link>
-                                <nuxt-link style="float: right" class="ant-tag" :to="`/member/${fact.user.username}`">
-                                    <a-icon type="user"/>
-                                    <span>{{convertName(fact.user)}}</span>
-                                </nuxt-link>
-                            </div>
-                        </div>
-                    </a-col>
-                    <span class="label">New</span>
-                </a-row>
-            </div>
-        </div>
+    <div class="container">
+        <a-row class="bt_16" :gutter="16">
+            <a-col :md="12">
+                <h3 class="uppercase">Popular Facts</h3>
+            </a-col>
+            <a-col :md="12" :sm="24">
+                <a-button-group style="float: right">
+                    <a-button @click="handle_click(true)">
+                        <a-icon type="left"/>
+                    </a-button>
+                    <a-button @click="handle_click(false)">
+                        <a-icon type="right"/>
+                    </a-button>
+                </a-button-group>
+            </a-col>
+        </a-row>
+        <a-row :gutter="16">
+            <a-col class="new-fact" :md="8" :xs="24" v-for="(fact, i) in facts" :key="fact._id">
+                <a-card class="fact-card wrapper" v-bind:style="styles[i]">
+                    <div class="bt_16">
+                        <nuxt-link
+                            v-for="topic in fact.taxonomies" :key="topic._id" class="ant-tag"
+                            :to="`/topic/${topic.slug}/`">
+                            <a-icon type="tag"/>
+                            <span>{{topic.title}}</span>
+                        </nuxt-link>
+                        <q>
+                            <n-link :to="`/${fact._id}`">{{fact.contentShort}}</n-link>
+                        </q>
+                    </div>
+                    <div class="tags">
+                        <nuxt-link style="float: right" class="ant-tag" :to="`/member/${fact.user.username}`">
+                            <a-icon type="user"/>
+                            <span>{{convertName(fact.user)}}</span>
+                        </nuxt-link>
+                    </div>
+                </a-card>
+            </a-col>
+        </a-row>
     </div>
 </template>
 
@@ -59,7 +59,18 @@
             return {
                 total: this.data.total,
                 facts: this.data.results,
-                current: 1
+                current: 1,
+                styles: [
+                    {
+                        backgroundImage: 'linear-gradient(to left, #9bda81, #26b07a)'
+                    },
+                    {
+                        backgroundImage: 'linear-gradient(to left, #fed44b, #ffaa43)'
+                    },
+                    {
+                        backgroundImage: 'linear-gradient(to left, #bf8ee4, #574f84)'
+                    }
+                ]
             }
         },
         methods: {
@@ -81,8 +92,8 @@
             },
             async fetch() {
                 let query = {
-                    pageSize: 1,
-                    ordering: 'newest',
+                    pageSize: 3,
+                    ordering: 'popular',
                     page: this.current
                 }
                 let res = await this.$api.fact.list(query)

@@ -33,9 +33,7 @@
             </div>
         </a-layout-header>
         <a-layout-content class="master">
-            <div class="container">
-                <nuxt/>
-            </div>
+            <nuxt/>
         </a-layout-content>
         <a-layout-footer :style="{ textAlign: 'center' }">TheFactWall.com ©2018</a-layout-footer>
         <a-drawer

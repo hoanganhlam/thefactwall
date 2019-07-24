@@ -3,7 +3,7 @@
         <a-layout>
             <TopicList label="trending" :data="home.hotTopic"/>
         </a-layout>
-        <a-layout>
+        <a-layout class="ant-layout-has-sider">
             <FactNew :data="home.hotFact" class="bt_16"/>
         </a-layout>
         <a-layout>

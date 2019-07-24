@@ -1,10 +1,10 @@
 <template>
     <div class="container">
         <a-row class="bt_16" :gutter="16">
-            <a-col :md="12">
+            <a-col :md="12" :xs="12">
                 <h3 class="uppercase">Popular Facts</h3>
             </a-col>
-            <a-col :md="12" :sm="24">
+            <a-col :md="12" :xs="12">
                 <a-button-group style="float: right">
                     <a-button @click="handle_click(true)">
                         <a-icon type="left"/>
@@ -17,7 +17,7 @@
         </a-row>
         <a-row :gutter="16">
             <a-col class="new-fact" :md="8" :xs="24" v-for="(fact, i) in facts" :key="fact._id">
-                <a-card class="fact-card wrapper" v-bind:style="styles[i]">
+                <a-card class="fact-card wrapper bt_16" v-bind:style="styles[i]">
                     <div class="bt_16">
                         <nuxt-link
                             v-for="topic in fact.taxonomies" :key="topic._id" class="ant-tag"

@@ -1,5 +1,11 @@
 <template>
-    <div class="ant-card ant-card-bordered">
+    <div class="ant-card ant-card-bordered" v-bind:class="{'has-cover': fact.photo && (fact.photo.size || fact.photo.length) }">
+        <div slot="cover" class="featured" v-if="fact.photo && (fact.photo._id || fact.photo.length)">
+            <img v-if="fact.photo.size" slot="cover" :alt="fact.photo.title"
+                 :src="'/' + fact.photo.path">
+            <img v-if="fact.photo.length" slot="cover" :alt="fact.photo[0].title"
+                 :src="'/' + fact.photo[0].path">
+        </div>
         <div class="ant-card-head">
             <user-card :user="user" class="bt_16">
                 <div class="ant-list-item-meta-description">
@@ -44,13 +50,7 @@
                 </template>
             </user-card>
             <div class="ant-card-head-wrapper">
-                <div class="featured" v-if="fact.photo && (fact.photo._id || fact.photo.length)">
-                    <img v-if="fact.photo.size" slot="cover" :alt="fact.photo.title"
-                         :src="'/' + fact.photo.size['200_200']">
-                    <img v-if="fact.photo.length" slot="cover" :alt="fact.photo[0].title"
-                         :src="'/' + fact.photo[0].size['200_200']">
-                </div>
-                <div>
+                <div class="wrapper">
                     <Editable :to="'/' + fact._id"
                               v-if="$auth.loggedIn && $auth.user.id === fact.user.id"
                               :text="fact.contentShort" @change="handleUpdate(fact._id, 'contentShort', $event)"/>
@@ -131,13 +131,20 @@
         watchQuery: true,
         methods: {
             async toggleVote(value) {
-                let data = {
-                    value: value,
+                if (this.$auth.loggedIn) {
+                    let data = {
+                        value: value,
+                    }
+                    if (this.checkVoted(value)) {
+                        data.value = 0
+                    }
+                    this.isVoted = await this.$axios.$post(`/facts/${this.fact._id}/vote/`, data)
+                } else {
+                    this.$notification['warning']({
+                        message: 'Member\'s feature',
+                        description: 'You must login to vote!',
+                    });
                 }
-                if (this.checkVoted(value)) {
-                    data.value = 0
-                }
-                this.isVoted = await this.$axios.$post(`/facts/${this.fact._id}/vote/`, data)
             },
             checkVoted(value) {
                 return this.isVoted && value === this.isVoted.value

@@ -87,5 +87,5 @@ sw.*
 # Mac OSX
 .DS_Store
 
-static/realized/
-static/uploads/
+static/realized/*
+static/uploads/*

@@ -1,5 +1,6 @@
 <template>
     <div>
+        <a-alert class="bt_16" message="Only member can comment this!" banner v-if="!$auth.loggedIn"/>
         <div class="bt_16" v-if="$auth.loggedIn">
             <a-form-item class="bt_16">
                 <a-textarea :rows="2" v-model="form.content"></a-textarea>
@@ -19,7 +20,7 @@
                 </a-col>
             </a-row>
         </div>
-        <h4>Comments</h4>
+        <h4 v-if="results.length">Comments</h4>
         <a-comment v-for="comment in results" :key="comment.id">
             <n-link slot="author" :to="`/member/${comment.user.username}`">{{convertName(comment.user)}}</n-link>
             <div slot="avatar" class="ant-avatar ant-avatar-circle ant-avatar-image">

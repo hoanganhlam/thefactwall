@@ -17,23 +17,27 @@
         </a-row>
         <a-row :gutter="16">
             <a-col class="new-fact" :md="8" :xs="24" v-for="(fact, i) in facts" :key="fact._id">
-                <a-card class="fact-card wrapper bt_16" v-bind:style="styles[i]">
-                    <div class="bt_16">
-                        <nuxt-link
-                            v-for="topic in fact.taxonomies" :key="topic._id" class="ant-tag"
-                            :to="`/topic/${topic.slug}/`">
-                            <a-icon type="tag"/>
-                            <span>{{topic.title}}</span>
-                        </nuxt-link>
-                        <q>
-                            <n-link :to="`/${fact._id}`">{{fact.contentShort}}</n-link>
-                        </q>
-                    </div>
-                    <div class="tags">
-                        <nuxt-link style="float: right" class="ant-tag" :to="`/member/${fact.user.username}`">
-                            <a-icon type="user"/>
-                            <span>{{convertName(fact.user)}}</span>
-                        </nuxt-link>
+                <a-card class="fact-card bt_16" v-bind:style="styles[i]">
+                    <div class="ant-card-head-wrapper">
+                        <div class="wrapper">
+                            <div class="content bt_16">
+                                <nuxt-link
+                                    v-for="topic in fact.taxonomies" :key="topic._id" class="ant-tag"
+                                    :to="`/topic/${topic.slug}/`">
+                                    <a-icon type="tag"/>
+                                    <span>{{topic.title}}</span>
+                                </nuxt-link>
+                                <q>
+                                    <n-link :to="`/${fact._id}`">{{fact.contentShort}}</n-link>
+                                </q>
+                            </div>
+                            <div class="tags">
+                                <nuxt-link style="float: right" class="ant-tag" :to="`/member/${fact.user.username}`">
+                                    <a-icon type="user"/>
+                                    <span>{{convertName(fact.user)}}</span>
+                                </nuxt-link>
+                            </div>
+                        </div>
                     </div>
                 </a-card>
             </a-col>

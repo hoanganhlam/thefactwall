@@ -17,7 +17,7 @@
                 <template v-slot:right>
                     <a-popover style="float: right">
                         <template slot="content">
-                            <a-button-group>
+                            <a-button-group class="vote-wrap">
                                 <a-button @click="toggleVote(1)"
                                           v-bind:class="{'ant-btn-primary': checkVoted(1)}">
                                     <a-icon :component="WOWIcon"/>
@@ -70,7 +70,7 @@
                             <a-icon type="tag"/>
                             <span>{{topic.title}} </span>
                         </nuxt-link>
-                        <a-tag v-if="fact.source && typeof fact.source === 'object'" @click="showSource = !showSource">
+                        <a-tag v-if="fact.source && fact.source.title" @click="showSource = !showSource">
                             <a-icon type="dash"/>
                         </a-tag>
                         <a-popconfirm title="Are you sure delete this fact?"

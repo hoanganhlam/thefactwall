@@ -4,6 +4,10 @@ const {TaxonomyModel, UserModel, FactModel} = require('core-model');
 var auth = require('./auth');
 
 async function factPopular(user) {
+    let query = {}
+    if (user === null || (user && user.email !== 'lam@trip.vn')) {
+        query['createdAt'] = {$lt: new Date()}
+    }
     let aggregate = [
         {
             $addFields: {
@@ -32,7 +36,7 @@ async function factPopular(user) {
             }
         },
         {$project: {'user.hash': 0, 'user.salt': 0, 'user.email': 0}},
-        {$sort: {score: -1}}
+        {$sort: {score: -1, createdAt: -1}}
     ]
     const results = await FactModel.aggregate(aggregate)
     const display = await FactModel.aggregate(aggregate)
@@ -108,34 +112,33 @@ async function onThisDay(user, query) {
 }
 
 async function factNew(user) {
+    let query = {}
+    if (user === null || (user && user.email !== 'lam@trip.vn')) {
+        query['createdAt'] = {$lt: new Date()}
+    }
     let aggregate = [
-        {
-            $addFields: {
-                "isVoted": {
+        {$addFields: {"isVoted": {
                     $filter: {
                         input: "$votes",
                         as: "vote",
                         cond: {$eq: ["$$vote.user", user ? user._id : null]}
                     }
-                },
-            }
-        },
-        {
-            $lookup: {from: 'taxonomies', localField: 'taxonomies', foreignField: '_id', as: 'taxonomies'}
-        },
+                },}},
+        {$lookup: {from: 'taxonomies', localField: 'taxonomies', foreignField: '_id', as: 'taxonomies'}},
         {$lookup: {from: 'File', localField: 'photo', foreignField: '_id', as: 'photo'}},
         {$lookup: {from: 'User', localField: 'user', foreignField: '_id', as: 'user'}},
         {$unwind: "$user"},
-        {
-            $lookup: {
+        {$lookup: {
                 from: "File",
                 localField: 'user.avatar',
                 foreignField: '_id',
                 as: "user.avatar"
-            }
+            }},
+        {
+            $match: query
         },
         {$project: {'user.hash': 0, 'user.salt': 0, 'user.email': 0}},
-        {$sort: {createAt: -1}}
+        {$sort: {createdAt: -1}}
     ]
     const results = await FactModel.aggregate(aggregate)
     const display = await FactModel.aggregate(aggregate)

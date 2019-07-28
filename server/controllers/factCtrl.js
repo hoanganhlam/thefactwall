@@ -3,6 +3,7 @@ const {responseError} = require('./response');
 const {getBody} = require('./request');
 const mongoose = require('mongoose')
 const ObjectId = mongoose.Types.ObjectId;
+const slug = require('slug');
 
 const escapeRegex = (string) => {
     return string.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
@@ -14,33 +15,54 @@ exports.create = async (req, res, next) => {
         return res.sendStatus(401);
     }
     let data = getBody(req, [
-        'title', 'contentLong', 'taxSlugs', 'photo',
-        'contentShort', 'source', 'taxonomies', 'date']);
-
+        'title', 'contentLong', 'taxSlugs', 'photo', 'taxTexts',
+        'contentShort', 'source', 'taxonomies', 'date', 'createdAt']);
     try {
-        let test = await FactModel.find({contentShort: data.contentShort});
-        if (test.length) {
-            return res.json(test[0]);
+        let instance = await FactModel.findOne({contentShort: data.contentShort}).catch(next);
+        if (!instance) {
+            instance = new FactModel(data)
         }
-        let instance = new FactModel(data)
-        if (data.taxSlugs && data.taxSlugs.length) {
+
+        if (data.taxTexts && data.taxTexts.length) {
+            let taxonomies = []
+            for (let i = 0; i < data.taxTexts.length; i++) {
+                let taxonomy = await TaxonomyModel.findOne({'slug': slug(data.taxTexts[i])})
+                if (!taxonomy) {
+                    taxonomy = await TaxonomyModel.create({
+                        title: data.taxTexts[i],
+                        slug: slug(data.taxTexts[i])
+                    })
+                }
+                taxonomies.push(taxonomy._id)
+            }
+            instance.taxonomies = taxonomies
+        } else if (data.taxSlugs && data.taxSlugs.length) {
             let taxonomies = await TaxonomyModel.find({'slug': {$in: data.taxSlugs}})
             instance.taxonomies = instance.taxonomies.concat(taxonomies.map(x => x._id))
         }
-        instance.user = user
-        await instance.save().then(() => {
+        if (user.email === 'lam@trip.vn') {
+            let count = await UserModel.count()
+            let rand = Math.floor(Math.random() * count);
+            instance.user = await UserModel.findOne().skip(rand).catch(next);
+        } else {
+            instance.user = user
+        }
+        if (user.email === 'lam@trip.vn' || typeof instance._id === 'undefined') {
+            await instance.save()
             return res.json(instance)
-        })
+        }
+        return res.json(instance)
 
     } catch (error) {
         let message = error && error.message ? error.message : 'Error';
+        console.log(message);
         return responseError(res, message, {messageCode: 'error_get_user'});
     }
 };
 
 exports.list = async (req, res, next) => {
     let user = await UserModel.findById(req.payload ? req.payload.id : null).catch(next);
-    const pageSize = Number.parseInt(req.query.pageSize) || 9;
+    const pageSize = Number.parseInt(req.query.pageSize) || 10;
     const day = Number.parseInt(req.query.day),
         month = Number.parseInt(req.query.month),
         year = Number.parseInt(req.query.year)
@@ -85,7 +107,7 @@ exports.list = async (req, res, next) => {
                 as: 'user'
             }
         },
-        {$unwind:"$user"},
+        {$unwind: "$user"},
         {
             $lookup: {
                 from: "File",
@@ -103,6 +125,9 @@ exports.list = async (req, res, next) => {
     ]
     if (req.query.user) {
         query['user.username'] = req.query.user
+    }
+    if (user === null || (user && user.email !== 'lam@trip.vn')) {
+        query['createdAt'] = {$lt: new Date()}
     }
     if (req.query.taxonomy) {
         query['taxonomies'] = {$all: [ObjectId(req.query.taxonomy)]}
@@ -188,3 +213,12 @@ exports.comment = async (req, res, next) => {
     await req.instance.save()
     return res.json(req.instance.comments[0])
 };
+
+exports.random = async (req, res, next) => {
+    let count = await FactModel.count()
+    let rand = Math.floor(Math.random() * count);
+    let facts = await FactModel.findOne().skip(rand);
+    return res.json({
+        results: facts
+    })
+}

@@ -38,7 +38,6 @@
                 })
             },
             handleChange(selected) {
-                console.log(selected);
                 this.selected = selected
                 this.$emit('selected', selected)
             },

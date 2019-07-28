@@ -28,6 +28,7 @@ router.param('fact', async function (req, res, next, id) {
 /* GET home page. */
 router.get('/', auth.optional, taskCtrl.list);
 router.post('/', auth.required, taskCtrl.create);
+router.get('/random', auth.optional, taskCtrl.random);
 router.get('/:fact', auth.optional, taskCtrl.retrieve);
 router.put('/:fact', auth.optional, taskCtrl.update);
 router.delete('/:fact', auth.required, taskCtrl.delete);

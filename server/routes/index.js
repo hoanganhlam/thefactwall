@@ -1,6 +1,6 @@
 var router = require('express').Router();
 
-router.use('/users', require('./routeUses'));
+router.use('/users', require('./routeUser'));
 router.use('/facts', require('./routeFact'));
 router.use('/files', require('./routeFile'));
 router.use('/taxonomies', require('./routeTaxonomy'));

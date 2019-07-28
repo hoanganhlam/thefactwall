@@ -52,7 +52,7 @@
                     <a-date-picker v-model="form.date" format="YYYY-MM-D"/>
                 </a-form-item>
                 <a-form-item label="Media">
-                    <Uploader @uploaded="form.photo = $event ? $event._id: null"/>
+                    <Uploader :selected="photoSelected" @uploaded="handleSelectPhoto"/>
                 </a-form-item>
                 <a-form-item>
                     <a-button class="full-width" type="primary" @click="handleSubmit">
@@ -84,6 +84,7 @@
                 fetching: false,
                 visible: false,
                 topicName: null,
+                photoSelected: null,
                 form: {
                     contentShort: null,
                     contentLong: null,
@@ -106,6 +107,12 @@
                     this.topics = res.results
                     this.fetching = false
                 })
+            },
+            handleSelectPhoto(e) {
+                this.photoSelected = e
+                if (e) {
+                    this.form.photo = e._id
+                }
             },
             handleSubmit() {
                 this.$message.config({top: '80%'})

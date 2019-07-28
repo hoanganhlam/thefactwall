@@ -34,11 +34,12 @@ const NewSchema = new Schema({
             ],
             createdAt: Date
         }
-    ]
+    ],
+    createdAt: { type: Date, default: Date.now },
+    updatedAt: { type: Date, default: Date.now }
 }, {
     versionKey: false,
     collection: collection,
-    timestamps: true
 });
 
 NewSchema.methods.toJSONFor = function (user) {

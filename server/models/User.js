@@ -31,7 +31,11 @@ const UserSchema = new Schema({
     firstName: String,
     lastName: String,
     avatar: {type: mongoose.Schema.Types.ObjectId, ref: 'File'},
-    bio: String
+    bio: String,
+    isFiend: {
+        type: Boolean,
+        default: false
+    }
 }, {
     versionKey: false,
     collection: collection,
@@ -111,6 +115,14 @@ UserSchema.methods.isVoted = function (fact) {
         return vote.user.toString() === _this._id.toString()
     })
     return voted.length ? voted[0] : false;
+};
+
+UserSchema.methods.random = async function () {
+    return this.count(function(err, count) {
+        if (err) return cb(err);
+        let rand = Math.floor(Math.random() * count);
+        this.findOne().skip(rand);
+    }.bind(this));
 };
 
 module.exports = mongoose.model(collection, UserSchema);

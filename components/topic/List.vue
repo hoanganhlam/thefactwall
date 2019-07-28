@@ -101,21 +101,4 @@
 </script>
 
 <style lang="scss">
-    .topics {
-        position: relative;
-
-        .next, .previous {
-            position: absolute;
-            top: calc(50% - 10px);
-            cursor: pointer;
-        }
-
-        .next {
-            right: -30px;
-        }
-
-        .previous {
-            left: -30px;
-        }
-    }
 </style>

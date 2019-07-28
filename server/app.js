@@ -1,3 +1,4 @@
+const cors = require('cors')
 const express = require('express');
 const path = require('path');
 const cookieParser = require('cookie-parser');
@@ -8,6 +9,20 @@ require('./helpers/load-env');
 require('./models/User')
 const app = express();
 
+const whitelist = [
+    'http://127.0.0.1',
+    'http://localhost',
+    'http://wwww.thefactwall.com',
+    'https://wwww.thefactwall.com'
+]
+
+const corsOptions = {
+    origin: function (origin, callback) {
+        callback(null, true)
+    }
+}
+
+app.use(cors(corsOptions))
 app.use(httpLogger('dev'));
 app.use(bodyParser.json({
     verify(req, res, buf) {

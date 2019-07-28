@@ -4,6 +4,10 @@ const {TaxonomyModel, UserModel, FactModel} = require('core-model');
 var auth = require('./auth');
 
 async function factPopular(user) {
+    let query = {}
+    if (user === null || (user && user.email !== 'lam@trip.vn')) {
+        query['createdAt'] = {$lt: new Date()}
+    }
     let aggregate = [
         {
             $addFields: {
@@ -109,6 +113,9 @@ async function onThisDay(user, query) {
 
 async function factNew(user) {
     let query = {}
+    if (user === null || (user && user.email !== 'lam@trip.vn')) {
+        query['createdAt'] = {$lt: new Date()}
+    }
     let aggregate = [
         {$addFields: {"isVoted": {
                     $filter: {
@@ -133,9 +140,6 @@ async function factNew(user) {
         {$project: {'user.hash': 0, 'user.salt': 0, 'user.email': 0}},
         {$sort: {createdAt: -1}}
     ]
-    if (user === null || (user && user.email !== 'lam@trip.vn')) {
-        query['createdAt'] = {$lt: new Date()}
-    }
     const results = await FactModel.aggregate(aggregate)
     const display = await FactModel.aggregate(aggregate)
         .limit(10)

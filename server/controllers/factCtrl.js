@@ -129,8 +129,6 @@ exports.list = async (req, res, next) => {
     if (user === null || (user && user.email !== 'lam@trip.vn')) {
         query['createdAt'] = {$lt: new Date()}
     }
-    console.log(user);
-    console.log(query);
     if (req.query.taxonomy) {
         query['taxonomies'] = {$all: [ObjectId(req.query.taxonomy)]}
     }

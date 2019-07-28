@@ -34,7 +34,9 @@
                                     <div class="ant-list-item-meta-description">{{user.bio}}</div>
                                 </div>
                             </div>
-                            <div class="control" @click="handleUpdate">
+                            <div
+                                v-if="$auth.loggedIn && ($auth.user._id === user._id || $auth.user.email ==='lam@trip.vn')"
+                                class="control" @click="handleUpdate">
                                 <a-icon v-if="updating" type="save"></a-icon>
                                 <a-icon v-else type="edit"></a-icon>
                             </div>
@@ -85,12 +87,15 @@
                     lastName: null,
                     avatar: null,
                     bio: null
-                }
+                },
+                meta: []
             }
         },
         head() {
             return {
-                title: `Facts by ${this.convertName(this.user)}`
+                title: `Facts by ${this.convertName(this.user)}`,
+                meta: this.meta
+
             }
         },
         methods: {
@@ -110,7 +115,14 @@
         mounted() {
             this.form.firstName = this.user.firstName
             this.form.lastName = this.user.lastName
-            this.form.avatar = this.user.avatar._id
+            if (this.user.avatar) {
+                this.form.avatar = this.user.avatar._id
+            }
+        },
+        created() {
+            if (this.res.results.length === 0) {
+                this.meta.push({hid: 'robots', name: 'robots', content: 'noindex'})
+            }
         }
     }
 </script>

@@ -1,7 +1,7 @@
 <template>
     <a-card class="topic-card" hoverable>
         <img slot="cover" v-if="topic.tempPhotos && topic.tempPhotos.length" :alt="topic.title"
-             :src="topic.tempPhotos[0].size['210_260']">
+             :src="'/' + topic.tempPhotos[0].size['210_260']">
         <img slot="cover" alt="Empty Avatar" v-else src="https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png">
         <a-card-meta>
             <h3 slot="description">

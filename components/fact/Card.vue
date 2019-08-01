@@ -51,8 +51,7 @@
             </user-card>
             <div class="ant-card-head-wrapper">
                 <div class="wrapper">
-                    <Editable :to="'/' + fact._id"
-                              v-if="$auth.loggedIn && $auth.user.id === fact.user.id"
+                    <Editable :to="'/' + fact._id" v-if="$auth.loggedIn && $auth.user.id === fact.user.id"
                               :text="fact.contentShort" @change="handleUpdate(fact._id, 'contentShort', $event)"/>
                     <div v-else class="ant-card-head-title">
                         <n-link :to="'/' + fact._id">{{factCopy.contentShort}}</n-link>

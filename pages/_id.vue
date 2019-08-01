@@ -7,7 +7,7 @@
                         <a-card class="bt_16 fact-card">
                             <div class="bt_32">
                                 <div class="featured bt_16" slot="cover" v-if="fact.photo">
-                                    <img alt="logo" :src="fact.photo.path">
+                                    <img :alt="fact.photo.title" :src="'/' + fact.photo.path">
                                 </div>
                                 <div class="ant-list-item-content bt_16" style="display: unset">
                                     <div v-if="$route.params.id === 'random'">
@@ -29,8 +29,7 @@
                                 <user-card class="bt_16" :user="user">
                                     <div class="ant-list-item-meta-description">
                                         <small>
-                                            <nuxt-link :to="'/' + fact._id">{{timeSince(fact.createdAt)}}
-                                            </nuxt-link>
+                                            <nuxt-link :to="'/' + fact._id">{{timeSince(fact.createdAt)}}</nuxt-link>
                                         </small>
                                     </div>
                                 </user-card>

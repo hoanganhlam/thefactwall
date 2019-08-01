@@ -111,29 +111,35 @@ async function onThisDay(user, query) {
     }
 }
 
-async function factNew(user) {
+async function factNew(user, page) {
     let query = {}
     if (user === null || (user && user.email !== 'lam@trip.vn')) {
         query['createdAt'] = {$lt: new Date()}
     }
     let aggregate = [
-        {$addFields: {"isVoted": {
+        {
+            $addFields: {
+                "isVoted": {
                     $filter: {
                         input: "$votes",
                         as: "vote",
                         cond: {$eq: ["$$vote.user", user ? user._id : null]}
                     }
-                },}},
+                },
+            }
+        },
         {$lookup: {from: 'taxonomies', localField: 'taxonomies', foreignField: '_id', as: 'taxonomies'}},
         {$lookup: {from: 'File', localField: 'photo', foreignField: '_id', as: 'photo'}},
         {$lookup: {from: 'User', localField: 'user', foreignField: '_id', as: 'user'}},
         {$unwind: "$user"},
-        {$lookup: {
+        {
+            $lookup: {
                 from: "File",
                 localField: 'user.avatar',
                 foreignField: '_id',
                 as: "user.avatar"
-            }},
+            }
+        },
         {
             $match: query
         },
@@ -142,6 +148,7 @@ async function factNew(user) {
     ]
     const results = await FactModel.aggregate(aggregate)
     const display = await FactModel.aggregate(aggregate)
+        .skip(10 * (page - 1))
         .limit(10)
         .catch(err => {
             console.log(err);
@@ -187,12 +194,13 @@ async function contributors() {
 
 /* GET home page. */
 router.get('/', auth.optional, async (req, res, next) => {
+    const page = Number.parseInt(req.query.page) || 1
     const day = Number.parseInt(req.query.day) || null
     const month = Number.parseInt(req.query.month) || null
     const year = Number.parseInt(req.query.year) || null
 
     let user = await UserModel.findById(req.payload ? req.payload.id : null).catch(next);
-    let n = await factNew(user)
+    let n = await factNew(user, page)
     let p = await factPopular(user)
     let t = await taxonomies()
     let c = await contributors()

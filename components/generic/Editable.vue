@@ -53,5 +53,10 @@
                 this.editable = true;
             },
         },
+        watch: {
+            text() {
+                this.value = this.text
+            }
+        }
     };
 </script>

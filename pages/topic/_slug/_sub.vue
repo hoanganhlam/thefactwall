@@ -60,18 +60,18 @@
         },
         watchQuery: true,
         async asyncData({app, params, query}) {
-            let {instance, fact, contributors} = await app.$api.taxonomy.get(params.slug, query)
+            let res = await app.$api.taxonomy.get(params.slug, query)
             if (typeof params.sub === 'undefined') {
                 params.sub = 'facts'
             } else {
                 params.sub = params.sub + ' facts'
             }
             return {
-                topic: instance,
-                title: params.sub + ' about ' + instance.title,
+                topic: res.instance,
+                title: params.sub + ' about ' + res.instance.title,
                 query: query,
-                fact,
-                contributors
+                fact: res.fact,
+                contributors: res.contributors,
             }
         },
         data() {

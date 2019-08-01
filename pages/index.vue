@@ -66,12 +66,11 @@
                 title: 'TheFactWall.com - Place of truth'
             }
         },
-        async asyncData({app}) {
+        watchQuery: true,
+        async asyncData({app, query}) {
             let today = new moment()
-            let query = {
-                day: today.date(),
-                month: today.month() + 1
-            }
+            query['day'] = today.date()
+            query['month'] = today.month() + 1
             let {n, p, t, c, d, r} = await app.$axios.$get('/home/', {params: query})
             return {
                 home: {

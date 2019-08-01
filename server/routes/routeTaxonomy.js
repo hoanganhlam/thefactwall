@@ -5,7 +5,7 @@ const {TaxonomyModel} = require('core-model');
 var auth = require('./auth');
 
 router.param('taxonomy', async function (req, res, next, id) {
-    let instance = await TaxonomyModel.find({slug: id})
+    let instance = await TaxonomyModel.findOne({slug: id})
         .populate({path: 'facts', populate: {path: 'photo', model: 'File'}})
         .catch(next);
     if (!instance) {

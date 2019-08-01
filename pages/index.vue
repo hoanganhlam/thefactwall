@@ -3,19 +3,12 @@
         <a-layout>
             <TopicList label="trending" :data="home.hotTopic"/>
         </a-layout>
-        <a-layout class="ant-layout-has-sider">
-            <FactNew :data="home.hotFact" class="bt_16"/>
-        </a-layout>
         <a-layout>
             <div class="container">
-                <a-row :gutter="16">
-                    <a-col class="gutter-row bt_16" :md="16" :xs="24">
-                        <a-card class="gray" :bordered="false" :body-style="{padding: 0}">
-                            <FactList :data="home.newFact" :query="{ordering: 'newest'}"/>
-                        </a-card>
-                    </a-col>
+                <a-row :gutter="20">
                     <a-col class="gutter-row" :md="8" :xs="24">
                         <a-layout-sider width="100%">
+                            <FactNew :data="home.hotFact" class="bt_16"/>
                             <a-card title="Contributors" class="bt_16">
                                 <user-card
                                     class="bt_16"
@@ -40,6 +33,16 @@
                             </a-card>
                         </a-layout-sider>
                     </a-col>
+                    <a-col class="gutter-row bt_16" :md="16" :xs="24">
+                        <h4 class="uppercase">
+                            <n-link to="/random/">Random facts</n-link>
+                        </h4>
+                        <FactCard class="bt_16 fact-card" :fact="home.random"></FactCard>
+                        <h4 class="uppercase">New facts</h4>
+                        <a-card class="gray" :bordered="false" :body-style="{padding: 0}">
+                            <FactList :data="home.newFact" :query="{ordering: 'newest'}"/>
+                        </a-card>
+                    </a-col>
                 </a-row>
             </div>
         </a-layout>
@@ -47,6 +50,7 @@
 </template>
 
 <script>
+    import FactCard from '../components/fact/Card'
     import TopicList from '../components/topic/List'
     import FactList from '../components/fact/List'
     import FactNew from '../components/fact/New'
@@ -55,7 +59,7 @@
     export default {
         name: "index",
         components: {
-            TopicList, FactList, FactNew
+            TopicList, FactList, FactNew, FactCard
         },
         head() {
             return {
@@ -68,14 +72,15 @@
                 day: today.date(),
                 month: today.month() + 1
             }
-            let {n, p, t, c, d} = await app.$axios.$get('/home/', {params: query})
+            let {n, p, t, c, d, r} = await app.$axios.$get('/home/', {params: query})
             return {
                 home: {
                     hotTopic: t,
                     newFact: n,
                     hotFact: p,
                     contributor: c,
-                    otd: d
+                    otd: d,
+                    random: r
                 }
             }
         }

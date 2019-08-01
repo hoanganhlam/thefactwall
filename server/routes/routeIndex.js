@@ -197,8 +197,16 @@ router.get('/', auth.optional, async (req, res, next) => {
     let t = await taxonomies()
     let c = await contributors()
     let d = await onThisDay(user, {'day': day, 'month': month, 'year': year})
+    let count = await FactModel.count()
+    let rand = Math.floor(Math.random() * count);
+    let r = await FactModel.findOne().populate('user').populate({
+        path: 'taxonomies',
+        populate: {
+            path: 'facts', populate: {path: 'photo', model: 'File'}
+        }
+    }).skip(rand);
     return res.json({
-        n, p, t, c, d
+        n, p, t, c, d, r: r.toJSONFor(user)
     })
 });
 

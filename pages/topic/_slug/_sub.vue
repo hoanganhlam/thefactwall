@@ -1,14 +1,15 @@
 <template>
     <a-layout>
         <div class="container">
-            <a-row :gutter="16">
+            <a-row :gutter="20">
                 <a-col class="gutter-row" :md="16" :xs="24">
                     <a-layout-content :style="{ minHeight: '700px' }">
                         <a-card class="bt_16">
                             <div class="ant-list-item-meta">
                                 <div class="ant-list-item-meta-avatar">
                                     <a-badge :count="fact.total">
-                                        <a-avatar v-if="topic.media && topic.media.id" shape="square" style="width: 150px; height: 150px;">
+                                        <a-avatar v-if="topic.media && topic.media.id" shape="square"
+                                                  style="width: 150px; height: 150px;">
                                             <img :src="api_domain + topic.media.thumbnails.thumb_150_150">
                                         </a-avatar>
                                         <a-avatar v-else shape="square" icon="tag"/>
@@ -17,7 +18,10 @@
                                 <div class="ant-list-item-meta-content">
                                     <h3 class="ant-list-item-meta-title">{{topic.title}}</h3>
                                     <div class="ant-list-item-meta-description">
-                                        <p>{{topic.description}}</p>
+                                        <Editable
+                                            v-if="$auth.loggedIn"
+                                            :text="topic.description"
+                                            @change="handleUpdate(topic.slug, 'description', $event)"/>
                                     </div>
                                 </div>
                             </div>
@@ -46,6 +50,7 @@
 
 <script>
     import FactList from '../../../components/fact/List'
+    import Editable from '../../../components/generic/Editable'
 
     export default {
         head() {
@@ -53,14 +58,21 @@
                 title: this.capitalizeFirst(this.title)
             }
         },
+        watchQuery: true,
         async asyncData({app, params, query}) {
-            let {instance, fact, contributors} = await app.$api.taxonomy.get(params.slug)
+            let {instance, contributors} = await app.$api.taxonomy.get(params.slug)
             if (typeof params.sub === 'undefined') {
                 params.sub = 'facts'
             } else {
                 params.sub = params.sub + ' facts'
             }
             query.taxonomy = instance._id
+            let fact = await app.$api.fact.list(
+                {
+                    pageSize: 10,
+                    page: query.page || 1,
+                    taxonomy: instance._id
+                })
             return {
                 topic: instance,
                 title: params.sub + ' about ' + instance.title,
@@ -72,8 +84,15 @@
         data() {
             return {}
         },
+        methods: {
+            async handleUpdate(id, dataIndex, value) {
+                let data = {}
+                data[dataIndex] = value
+                this.topic = await this.$api.taxonomy.update(id, data)
+            },
+        },
         components: {
-            FactList
+            FactList, Editable
         }
     }
 </script>

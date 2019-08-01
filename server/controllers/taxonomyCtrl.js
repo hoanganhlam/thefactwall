@@ -74,7 +74,7 @@ exports.retrieve = async (req, res, next) => {
                 return x.toJSONFor(user)
             })
             return res.json({
-                instance: req.instance[0].toJsonFor(),
+                instance: req.instance.toJsonFor(),
                 fact,
                 contributors
             });

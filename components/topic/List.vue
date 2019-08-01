@@ -62,6 +62,7 @@
                 default: 'rise'
             }
         },
+        watchQuery: true,
         components: {
             TopicCard,
         },

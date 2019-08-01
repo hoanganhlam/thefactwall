@@ -1,5 +1,5 @@
 <template>
-    <div class="container">
+    <div>
         <a-row class="bt_16" :gutter="16">
             <a-col :md="12" :xs="12">
                 <h3 class="uppercase">Popular Facts</h3>
@@ -16,7 +16,7 @@
             </a-col>
         </a-row>
         <a-row :gutter="16">
-            <a-col class="new-fact" :md="8" :xs="24" v-for="(fact, i) in facts" :key="fact._id">
+            <a-col class="new-fact" :xs="24" v-for="(fact, i) in facts" :key="fact._id">
                 <a-card class="fact-card bt_16" v-bind:style="styles[i]">
                     <div class="ant-card-head-wrapper">
                         <div class="wrapper">

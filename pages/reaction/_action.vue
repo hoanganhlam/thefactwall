@@ -1,7 +1,7 @@
 <template>
     <a-layout>
         <div class="container">
-            <a-row :gutter="16">
+            <a-row :gutter="20">
                 <a-col class="gutter-row" :md="16" :xs="24">
                     <a-layout-content :style="{ minHeight: '700px' }">
                         <a-card class="gray" :bordered="false" :body-style="{padding: 0}">
@@ -13,7 +13,7 @@
                                         </a-badge>
                                     </div>
                                     <div class="ant-list-item-meta-content">
-                                        <h1 class="ant-list-item-meta-title">{{capitalizeFirst(title)}}</h1>
+                                        <h1 style="font-size: 30px; line-height: 1" class="uppercase ant-list-item-meta-title">{{capitalizeFirst(title)}}</h1>
                                     </div>
                                 </div>
                             </a-card>
@@ -39,6 +39,7 @@
                 title: this.capitalizeFirst(this.title)
             }
         },
+        watchQuery: true,
         async asyncData({app, params, query}) {
             let action = '1'
             let title = ''

@@ -6,8 +6,9 @@
             </a-skeleton>
         </div>
         <a-card class="gray" :body-style="{padding: 0}" :bordered="false" v-if="pageSize  * current < total">
-            <a-pagination
-                :pageSize="pageSize"
+            <pagination
+                :base-url="'?page='"
+                :perPage="pageSize"
                 :total="total"
                 @change="handle_change"/>
         </a-card>

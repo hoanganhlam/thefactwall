@@ -1,7 +1,7 @@
 <template>
     <a-layout>
         <div class="container">
-            <a-row :gutter="16">
+            <a-row :gutter="20">
                 <a-col class="gutter-row" :md="16" :xs="24">
                     <a-layout-content :style="{ minHeight: '700px' }">
                         <a-card class="bt_16">
@@ -53,6 +53,7 @@
             }
         },
         name: 'OnThisDay',
+        watchQuery: true,
         async asyncData({app, params, query}) {
             let qStr = '', title = ''
             let today = new moment()

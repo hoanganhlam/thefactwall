@@ -1,7 +1,7 @@
 <template>
     <a-layout class="fact-detail-page">
         <div class="container">
-            <a-row :gutter="16">
+            <a-row :gutter="20">
                 <a-col class="gutter-row bt_16" :md="16" :xs="24">
                     <a-layout-content :style="{ minHeight: '700px' }">
                         <a-card class="bt_16 fact-card">
@@ -10,8 +10,21 @@
                                     <img alt="logo" :src="fact.photo.path">
                                 </div>
                                 <div class="ant-list-item-content bt_16" style="display: unset">
-                                    <h1>{{fact.contentShort}}</h1>
-                                    <p>{{fact.contentLong}}</p>
+                                    <div v-if="$route.params.id === 'random'">
+                                        <a-row>
+                                            <a-col :span="20">
+                                                <h1 style="font-size: 16px;" class="uppercase">{{title}}</h1>
+                                            </a-col>
+                                            <a-col :span="4">
+                                                <a-button style="float: right" @click="reset()">
+                                                    <a-icon type="retweet"></a-icon>
+                                                </a-button>
+                                            </a-col>
+                                        </a-row>
+                                        <h2>{{fact.contentShort}}</h2>
+                                    </div>
+                                    <h1 v-else>{{fact.contentShort}}</h1>
+                                    <p v-if="fact.contentLong">{{fact.contentLong}}</p>
                                 </div>
                                 <user-card class="bt_16" :user="user">
                                     <div class="ant-list-item-meta-description">
@@ -48,7 +61,10 @@
                                                     </a-button>
                                                 </a-button-group>
                                             </template>
-                                            <a-button size="small" v-bind:class="{'ant-btn-primary': isVoted}">
+                                            <a-button v-bind:class="{'ant-btn-primary': isVoted}">
+                                                <span>
+                                                    Vote
+                                                </span>
                                                 <a-icon :component="WOWIcon"/>
                                             </a-button>
                                         </a-popover>
@@ -56,12 +72,11 @@
                                     <a-col :span="12">
                                         <div style="float: right">
                                             <a-button
-                                                size="small"
                                                 v-if="fact.source && fact.title"
                                                 @click="showSource = !showSource">
                                                 <a-icon type="dash"/>
                                             </a-button>
-                                            <a-button v-if="$auth.loggedIn" size="small" @click="isUpdate = !isUpdate">
+                                            <a-button v-if="$auth.loggedIn" @click="isUpdate = !isUpdate">
                                                 <a-icon type="edit"/>
                                             </a-button>
                                         </div>
@@ -119,14 +134,16 @@
         },
         head() {
             return {
-                title: this.fact.contentShort
+                title: this.title
             }
         },
         async asyncData({app, params}) {
             let res = await app.$api.fact.get(params.id, null)
+            let title = params.id === 'random' ? 'Random facts' : res.title || res.contentShort
             return {
                 fact: res,
                 isVoted: res.isVoted,
+                title
             }
         },
         data() {
@@ -140,6 +157,10 @@
             }
         },
         methods: {
+            async reset() {
+                this.fact = await this.$api.fact.get('random', null)
+            },
+
             async toggleVote(value) {
                 let data = {
                     value: value,

@@ -94,15 +94,12 @@ exports.delete = (req, res) => {
     });
 };
 
-exports.me = (req, res, next) => {
-    UserModel.findById(req.payload.id)
-        .populate({path: 'avatar', model: 'File'})
-        .then(function (user) {
-            if (!user) {
-                return res.sendStatus(401);
-            }
-            return res.json(user);
-        }).catch(next);
+exports.me = async (req, res, next) => {
+    let user = await UserModel.findById(req.payload.id).populate({path: 'avatar', model: 'File'})
+    if (!user) {
+        return res.sendStatus(401);
+    }
+    return res.json(user);
 };
 
 exports.login = (req, res, next) => {

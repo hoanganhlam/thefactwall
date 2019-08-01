@@ -1,7 +1,7 @@
 <template>
     <a-layout>
         <div class="container">
-            <a-row :gutter="16">
+            <a-row :gutter="20">
                 <a-col class="gutter-row" :md="16" :xs="24">
                     <a-layout-content :style="{ minHeight: '700px' }">
                         <a-card class="bt_16">
@@ -66,12 +66,15 @@
         components: {
             FactList, Uploader
         },
+        watchQuery: true,
         async asyncData({app, params, query}) {
             let user = await app.$axios.$get(`/users/${params.username}`)
             if (params.username === 'me') {
                 params.username = app.$auth.user.username
             }
-            let res = await app.$axios.$get(`/facts/?user=${params.username}&page_size=10`)
+            let res = await app.$axios.$get(`/facts/?user=${params.username}&page_size=10`, {
+                params: query
+            })
             query.user = params.username
             return {
                 user: user,

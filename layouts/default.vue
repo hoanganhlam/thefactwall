@@ -18,6 +18,9 @@
                 <a-menu-item key="/reaction/fun">
                     <n-link to="/reaction/fun">Fun</n-link>
                 </a-menu-item>
+                <a-menu-item key="/random/">
+                    <n-link to="/random/">Random</n-link>
+                </a-menu-item>
                 <a-menu-item key="/onthisday">
                     <n-link to="/onthisday">On This Day</n-link>
                 </a-menu-item>

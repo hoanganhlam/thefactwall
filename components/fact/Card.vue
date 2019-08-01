@@ -7,7 +7,7 @@
                  :src="'/' + fact.photo[0].path">
         </div>
         <div class="ant-card-head">
-            <user-card :user="user" class="bt_16">
+            <user-card :user="user">
                 <div class="ant-list-item-meta-description">
                     <small>
                         <nuxt-link :to="'/' + fact._id">{{timeSince(fact.createdAt)}} ago

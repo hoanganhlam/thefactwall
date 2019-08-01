@@ -1,16 +1,12 @@
 <template>
     <div class="ant-list ant-list-vertical ant-list-lg ant-list-split">
-        <div class="fact-card bt_16" v-for="fact in facts" :key="fact.id">
+        <div class="fact-card bt_16" v-for="fact in data.results" :key="fact.id">
             <a-skeleton :loading="loading" active avatar>
                 <FactCard :fact="fact"/>
             </a-skeleton>
         </div>
-        <a-card class="gray" :body-style="{padding: 0}" :bordered="false" v-if="pageSize  * current < total">
-            <pagination
-                :base-url="'?page='"
-                :perPage="pageSize"
-                :total="total"
-                @change="handle_change"/>
+        <a-card class="gray" :body-style="{padding: 0}" :bordered="false" v-if="pageSize < data.total">
+            <pagination :base-url="'?page='" :perPage="pageSize" :total="data.total"/>
         </a-card>
     </div>
 </template>
@@ -30,17 +26,13 @@
                     }
                 }
             },
-            query: {
-                type: Object,
-                default: () => {
-                    return {
-                        page: 1
-                    }
-                }
-            },
             pageSize: {
                 type: Number,
                 default: 10
+            },
+            loading: {
+                type: Boolean,
+                default: false
             }
         },
         components: {
@@ -48,25 +40,7 @@
         },
         data() {
             return {
-                total: this.data.total,
-                facts: this.data.results,
-                current: this.query.page || 1,
-                queryTemp: this.query,
-                loading: false
-            }
-        },
-        methods: {
-            async fetch(page) {
-                this.loading = true
-                this.queryTemp.pageSize =  this.pageSize
-                this.queryTemp.page = page
-                let res = await this.$api.fact.list(this.queryTemp)
-                this.total = res.total
-                this.facts = res.results
-                this.loading = false
-            },
-            handle_change(page) {
-                this.fetch(page)
+                current: this.$route.query.page || 1
             }
         }
     }

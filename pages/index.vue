@@ -37,7 +37,7 @@
                         <h4 class="uppercase">
                             <n-link to="/random/">Random facts</n-link>
                         </h4>
-                        <FactCard class="bt_16 fact-card" :fact="home.random"></FactCard>
+                        <FactCard v-if="home.random" class="bt_16 fact-card" :fact="home.random"></FactCard>
                         <h4 class="uppercase">New facts</h4>
                         <a-card class="gray" :bordered="false" :body-style="{padding: 0}">
                             <FactList :data="home.newFact" :query="{ordering: 'newest'}"/>

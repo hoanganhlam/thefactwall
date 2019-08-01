@@ -128,7 +128,6 @@
                 factCopy: this.fact
             }
         },
-        watchQuery: true,
         methods: {
             async toggleVote(value) {
                 if (this.$auth.loggedIn) {
@@ -168,6 +167,11 @@
                     }
                 }
                 return null
+            }
+        },
+        watch: {
+            fact() {
+                this.factCopy = this.fact
             }
         }
     }

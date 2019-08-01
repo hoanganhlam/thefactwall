@@ -51,9 +51,10 @@ exports.list = async (req, res, next) => {
 exports.retrieve = async (req, res, next) => {
     let user = await UserModel.findById(req.payload ? req.payload.id : null).catch(next);
     const pageSize = req.query.pageSize || 10
+    const page = req.query.page || 1
     let fact = {
         results: [],
-        currentPage: 1,
+        currentPage: page,
         total: 0
     }
     FactModel.find({taxonomies: {$all: req.instance}}).populate('user').populate('photo').then(all => {
@@ -68,7 +69,7 @@ exports.retrieve = async (req, res, next) => {
         }
         FactModel
             .find({taxonomies: {$all: req.instance}}).populate('user').populate('taxonomies').populate('photo')
-            .skip((pageSize * 1) - pageSize)
+            .skip((pageSize * page) - pageSize)
             .limit(pageSize).then(results => {
             fact.results = results.map((x) => {
                 return x.toJSONFor(user)

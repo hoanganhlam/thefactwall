@@ -206,7 +206,7 @@ router.get('/', auth.optional, async (req, res, next) => {
         }
     }).skip(rand);
     return res.json({
-        n, p, t, c, d, r: r.toJSONFor(user)
+        n, p, t, c, d, r: r ? r.toJSONFor(user) : null
     })
 });
 

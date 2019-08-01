@@ -26,7 +26,7 @@
                                 </div>
                             </div>
                         </a-card>
-                        <a-card class="gray" :bordered="false" :body-style="{padding: 0}">
+                        <a-card class="bt_16 gray" :bordered="false" :body-style="{padding: 0}">
                             <h1 style="font-size: 18px">{{capitalizeFirst(title)}}</h1>
                             <FactList :data="fact" :query="query" :page-size="10"/>
                         </a-card>
@@ -60,19 +60,12 @@
         },
         watchQuery: true,
         async asyncData({app, params, query}) {
-            let {instance, contributors} = await app.$api.taxonomy.get(params.slug)
+            let {instance, fact, contributors} = await app.$api.taxonomy.get(params.slug, query)
             if (typeof params.sub === 'undefined') {
                 params.sub = 'facts'
             } else {
                 params.sub = params.sub + ' facts'
             }
-            query.taxonomy = instance._id
-            let fact = await app.$api.fact.list(
-                {
-                    pageSize: 10,
-                    page: query.page || 1,
-                    taxonomy: instance._id
-                })
             return {
                 topic: instance,
                 title: params.sub + ' about ' + instance.title,

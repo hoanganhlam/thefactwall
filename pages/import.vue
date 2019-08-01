@@ -76,11 +76,12 @@
     import ObjectSelect from '../components/generic/ObjectSelect'
     import TagInput from '../components/generic/TagInput'
     import Uploader from '../components/media/Uploader'
-    Array.prototype.unique = function() {
+
+    Array.prototype.unique = function () {
         var a = this.concat();
-        for(var i=0; i<a.length; ++i) {
-            for(var j=i+1; j<a.length; ++j) {
-                if(a[i] === a[j])
+        for (var i = 0; i < a.length; ++i) {
+            for (var j = i + 1; j < a.length; ++j) {
+                if (a[i] === a[j])
                     a.splice(j--, 1);
             }
         }
@@ -182,6 +183,9 @@
                 this.dataset.forEach(data => {
                     data.createdAt = new moment().add(data.key * this.timeInterval, 'm')
                 })
+            },
+            url() {
+                this.fetchDataCrawled()
             }
         },
         mounted() {

@@ -1,29 +1,27 @@
 <template>
-    <a-layout>
-        <div class="container">
-            <a-row :gutter="20" type="flex" justify="center">
-                <a-col class="gutter-row" :md="16" :xs="24">
-                    <a-layout-content :style="{ minHeight: '700px' }">
-                        <a-card class="gray" :bordered="false" :body-style="{padding: 0}">
-                            <a-card class="bt_16">
-                                <div class="ant-list-item-meta">
-                                    <div class="ant-list-item-meta-avatar">
-                                        <a-badge :count="res.total">
-                                            <a-avatar shape="square" icon="calendar"/>
-                                        </a-badge>
-                                    </div>
-                                    <div class="ant-list-item-meta-content">
-                                        <h1 style="font-size: 30px; line-height: 1" class="ant-list-item-meta-title">{{capitalizeFirst(title)}}</h1>
-                                    </div>
+    <div class="container">
+        <a-row :gutter="20" type="flex" justify="center">
+            <a-col class="gutter-row" :md="16" :xs="24">
+                <a-layout-content :style="{ minHeight: '700px' }">
+                    <a-card class="gray" :bordered="false" :body-style="{padding: 0}">
+                        <a-card class="bt_16">
+                            <div class="ant-list-item-meta">
+                                <div class="ant-list-item-meta-avatar">
+                                    <a-badge :count="res.total">
+                                        <a-avatar shape="square" icon="calendar"/>
+                                    </a-badge>
                                 </div>
-                            </a-card>
-                            <FactList :data="res" :query="query" :page-size="10"/>
+                                <div class="ant-list-item-meta-content">
+                                    <h1 style="font-size: 30px; line-height: 1" class="ant-list-item-meta-title">{{capitalizeFirst(title)}}</h1>
+                                </div>
+                            </div>
                         </a-card>
-                    </a-layout-content>
-                </a-col>
-            </a-row>
-        </div>
-    </a-layout>
+                        <FactList :data="res" :query="query" :page-size="10"/>
+                    </a-card>
+                </a-layout-content>
+            </a-col>
+        </a-row>
+    </div>
 </template>
 
 <script>

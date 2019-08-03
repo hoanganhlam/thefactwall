@@ -16,7 +16,7 @@
 }
 
 .container {
-    width: 888px;
+    max-width: 888px;
     margin: 0 auto;
 
     .ant-row-flex,
@@ -153,7 +153,7 @@ h3.ant-list-item-meta-title {
 }
 
 .master.ant-layout-content {
-    padding: 64px 50px;
+    padding: 64px 0;
 }
 
 .ant-layout-content {
@@ -364,6 +364,10 @@ h1 {
 
     .topics .next {
         right: 0;
+    }
+
+    .container {
+        width: 100%;
     }
 }
 

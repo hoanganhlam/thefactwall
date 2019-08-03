@@ -61,9 +61,7 @@
                                                 </a-button-group>
                                             </template>
                                             <a-button v-bind:class="{'ant-btn-primary': isVoted}">
-                                                <span>
-                                                    Vote
-                                                </span>
+                                                <span>Vote</span>
                                                 <a-icon :component="WOWIcon"/>
                                             </a-button>
                                         </a-popover>

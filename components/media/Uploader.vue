@@ -1,11 +1,11 @@
 <template>
     <div>
         <a-upload-dragger
-            v-if="photo === null"
-            :multiple="false"
-            :fileList="fileList"
-            :remove="handleRemove"
-            :beforeUpload="beforeUpload">
+                v-if="photo === null"
+                :multiple="false"
+                :fileList="fileList"
+                :remove="handleRemove"
+                :beforeUpload="beforeUpload">
             <p class="ant-upload-drag-icon">
                 <a-icon type="inbox"/>
             </p>
@@ -15,8 +15,12 @@
             <a-card hoverable style="width: 100%">
                 <img alt="example" :src="`/${size && photo.size ? photo.size[size] : photo.path}`" slot="cover"/>
                 <a-card-meta v-if="allowUpdate">
-                    <a-input @change="handleChange" slot="description" v-model="photo.title" placeholder="Photo's title"/>
+                    <a-input @change="handleChange" slot="description" v-model="photo.title"
+                             placeholder="Photo's title"/>
                 </a-card-meta>
+                <div class="delete" @click="photo=null">
+                    <a-icon type="delete"></a-icon>
+                </div>
             </a-card>
         </div>
     </div>
@@ -68,7 +72,7 @@
                 formData.append('file', file)
                 let res = await this.$axios.$post('/files/', formData)
                 this.photo = res
-                this.$emit('uploaded', res)
+                this.$emit('uploaded', this.photo)
                 return false;
             },
             async handleChange() {
@@ -80,6 +84,9 @@
         watch: {
             selected() {
                 this.photo = this.selected
+            },
+            photo() {
+                this.$emit('uploaded', this.photo)
             }
         }
     }

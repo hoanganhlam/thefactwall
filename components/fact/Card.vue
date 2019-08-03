@@ -51,18 +51,17 @@
             </user-card>
             <div class="ant-card-head-wrapper">
                 <div class="wrapper">
+                    <nuxt-link v-if="fact.date"
+                            :to="`/onthisday/${moment(fact.date, 'YYYY-MM-DD').month() + 1}/${moment(fact.date, 'YYYY-MM-DD').date()}/?year=${moment(fact.date).year()}`">
+                        <a-icon type="calendar"/>
+                        <span>in {{formatDate(fact.date)}}</span>
+                    </nuxt-link>
                     <Editable :to="'/' + fact._id" v-if="$auth.loggedIn && $auth.user.id === fact.user.id"
                               :text="fact.contentShort" @change="handleUpdate(fact._id, 'contentShort', $event)"/>
                     <div v-else class="ant-card-head-title">
                         <n-link :to="'/' + fact._id">{{factCopy.contentShort}}</n-link>
                     </div>
                     <div class="tags boxed">
-                        <nuxt-link
-                            v-if="fact.date" class="ant-tag"
-                            :to="`/onthisday/${moment(fact.date, 'YYYY-MM-DD').month() + 1}/${moment(fact.date, 'YYYY-MM-DD').date()}/?year=${moment(fact.date).year()}`">
-                            <a-icon type="calendar"/>
-                            <span>{{formatDate(fact.date)}}</span>
-                        </nuxt-link>
                         <nuxt-link
                             v-for="topic in fact.taxonomies" :key="topic._id" class="ant-tag"
                             :to="`/topic/${topic.slug}/`">
@@ -72,12 +71,8 @@
                         <a-tag v-if="fact.source && fact.source.title" @click="showSource = !showSource">
                             <a-icon type="dash"/>
                         </a-tag>
-                        <a-popconfirm title="Are you sure delete this fact?"
-                                      @confirm="handleDelete" okText="Yes"
-                                      cancelText="No">
-                            <a-tag>
-                                <a-icon type="delete"></a-icon>
-                            </a-tag>
+                        <a-popconfirm v-if="$auth.loggedIn && $auth.user._id === fact.user._id" title="Are you sure delete this fact?" @confirm="handleDelete" okText="Yes" cancelText="No">
+                            <a-tag><a-icon type="delete"></a-icon></a-tag>
                         </a-popconfirm>
                     </div>
                 </div>

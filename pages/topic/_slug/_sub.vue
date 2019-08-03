@@ -27,7 +27,7 @@
                             </div>
                         </a-card>
                         <a-card class="bt_16 gray" :bordered="false" :body-style="{padding: 0}">
-                            <h1 style="font-size: 18px">{{capitalizeFirst(title)}}</h1>
+                            <h1 style="font-size: 30px; line-height: 1">{{capitalizeFirst(title)}}</h1>
                             <FactList :data="fact" :query="query" :page-size="10"/>
                         </a-card>
                     </a-layout-content>

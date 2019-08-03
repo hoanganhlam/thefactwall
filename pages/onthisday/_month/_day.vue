@@ -1,8 +1,22 @@
 <template>
     <a-layout>
         <div class="container">
-            <a-row :gutter="20">
+            <a-row :gutter="20" type="flex" justify="center">
                 <a-col class="gutter-row" :md="16" :xs="24">
+                    <a-layout-sider width="100%">
+                        <a-card class="bt_16">
+                            <a-button-group style="width: 100%">
+                                <n-link :to="previous" class="ant-btn ant-btn-primary" style="width: 50%">
+                                    <a-icon type="left"/>
+                                    <span>Previous</span>
+                                </n-link>
+                                <n-link :to="next" class="ant-btn ant-btn-primary" style="width: 50%">
+                                    <span>Next</span>
+                                    <a-icon type="right"/>
+                                </n-link>
+                            </a-button-group>
+                        </a-card>
+                    </a-layout-sider>
                     <a-layout-content :style="{ minHeight: '700px' }">
                         <a-card class="bt_16">
                             <div class="ant-list-item-meta">
@@ -20,22 +34,6 @@
                             <FactList :data="res" :query="query" :page-size="10"/>
                         </a-card>
                     </a-layout-content>
-                </a-col>
-                <a-col class="gutter-row" :md="8" :xs="24">
-                    <a-layout-sider width="100%">
-                        <a-card class="bt_16">
-                            <a-button-group style="width: 100%">
-                                <n-link :to="previous" class="ant-btn ant-btn-primary" style="width: 50%">
-                                    <a-icon type="left"/>
-                                    <span>Previous</span>
-                                </n-link>
-                                <n-link :to="next" class="ant-btn ant-btn-primary" style="width: 50%">
-                                    <span>Next</span>
-                                    <a-icon type="right"/>
-                                </n-link>
-                            </a-button-group>
-                        </a-card>
-                    </a-layout-sider>
                 </a-col>
             </a-row>
         </div>

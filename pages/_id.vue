@@ -1,8 +1,8 @@
 <template>
     <a-layout class="fact-detail-page">
         <div class="container">
-            <a-row :gutter="20">
-                <a-col class="gutter-row bt_16" :md="16" :xs="24">
+            <a-row :gutter="20" type="flex" justify="center">
+                <a-col class="gutter-row bt_16" :md="24" :xs="24">
                     <a-layout-content :style="{ minHeight: '700px' }">
                         <a-card class="bt_16 fact-card">
                             <div class="bt_32">
@@ -93,16 +93,9 @@
                             </div>
                             <Comment :fact-id="fact._id" :response="{results: fact.comments}"/>
                         </a-card>
-                    </a-layout-content>
-                </a-col>
-                <a-col class="gutter-row" :md="8" :xs="24">
-                    <a-layout-sider width="100%">
                         <h4 class="uppercase">Related topics</h4>
-                        <TopicList
-                            label="Topic"
-                            :md="12"
-                            :data="{results: fact.taxonomies, total: fact.taxonomies.length}"/>
-                    </a-layout-sider>
+                        <TopicList label="Topic" :md="6" :xs="12" :data="{results: fact.taxonomies, total: fact.taxonomies.length}"/>
+                    </a-layout-content>
                 </a-col>
             </a-row>
         </div>
